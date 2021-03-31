@@ -1,7 +1,7 @@
 {
   "name": "@luckyswap/v2-sdk",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "🛠 An SDK for building applications on top of luckyswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,6 +22,7 @@
     "prepublishOnly": "tsdx build"
   },
   "dependencies": {
+    "@luckyswap-v2/core": "^0.2.3",
     "@luckyswap/v2-core": "0.0.2",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
