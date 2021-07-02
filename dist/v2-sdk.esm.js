@@ -33,10 +33,14 @@ var Rounding;
   Rounding[Rounding["ROUND_DOWN"] = 0] = "ROUND_DOWN";
   Rounding[Rounding["ROUND_HALF_UP"] = 1] = "ROUND_HALF_UP";
   Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
-})(Rounding || (Rounding = {}));
+})(Rounding || (Rounding = {})); /// MAINET
+// export const FACTORY_ADDRESS = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4'
+// export const INIT_CODE_HASH = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81'
+/// TESTNET
 
-var FACTORY_ADDRESS = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4';
-var INIT_CODE_HASH = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81';
+
+var FACTORY_ADDRESS = '0x2156bc3cC75a1Bfcad49f4f1Af19235c3a8A41F2';
+var INIT_CODE_HASH = '0x528371067e59e1ba4fd03d0c036996a3e88e2f6c45254b91f7154746a289a5c7';
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000); // exports for internal consumption
 
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
@@ -94,8 +98,7 @@ function _extends() {
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-
-  _setPrototypeOf(subClass, superClass);
+  subClass.__proto__ = superClass;
 }
 
 function _getPrototypeOf(o) {
@@ -120,7 +123,7 @@ function _isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
     return true;
   } catch (e) {
     return false;
@@ -436,7 +439,7 @@ function currencyEquals(currencyA, currencyB) {
     return currencyA === currencyB;
   }
 }
-var WETH = (_WETH = {}, _WETH[ChainId.MAINNET] = /*#__PURE__*/new Token(ChainId.MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'), _WETH[ChainId.BSCTESTNET] = /*#__PURE__*/new Token(ChainId.BSCTESTNET, '0xaE8E19eFB41e7b96815649A6a60785e1fbA84C1e', 18, 'WBNB', 'Wrapped BNB'), _WETH);
+var WETH = (_WETH = {}, _WETH[ChainId.MAINNET] = /*#__PURE__*/new Token(ChainId.MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'), _WETH[ChainId.BSCTESTNET] = /*#__PURE__*/new Token(ChainId.BSCTESTNET, '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', 18, 'WBNB', 'Wrapped BNB'), _WETH);
 
 var _toSignificantRoundin, _toFixedRounding;
 var Decimal = /*#__PURE__*/toFormat(_Decimal);
