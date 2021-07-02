@@ -70,5 +70,26 @@ export const WETH = {
     18,
     'WBNB',
     'Wrapped BNB'
+  ),
+  [ChainId.RINKEBY]: new Token(
+    ChainId.RINKEBY,
+    '0xd0A1E359811322d97991E03f863a0C30C2cF029C',
+    18,
+    'WETH9',
+    'Wrapped Ether'
+  ),
+  [ChainId.MATIC]: new Token(
+    ChainId.MATIC,
+    '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+    18,
+    'WMATIC',
+    'Wrapped Matic'
+  ),
+  [ChainId.MATIC_TESTNET]: new Token(
+    ChainId.MATIC_TESTNET,
+    '0x5B67676a984807a212b1c59eBFc9B3568a474F0a',
+    18,
+    'WMATIC',
+    'Wrapped Matic'
   )
 }
