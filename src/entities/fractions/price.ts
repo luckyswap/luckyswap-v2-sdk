@@ -8,7 +8,7 @@ import { BigintIsh, Rounding, TEN } from '../../constants'
 import { Currency } from '../currency'
 import { Route } from '../route'
 import { Fraction } from './fraction'
-import { CurrencyAmount } from './currencyAmount'
+import { CurrencyAmount } from '../currencyAmount'
 
 export class Price extends Fraction {
   public readonly baseCurrency: Currency // input i.e. denominator

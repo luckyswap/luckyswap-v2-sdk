@@ -1,4 +1,4 @@
-import { CurrencyAmount } from './currencyAmount'
+import { CurrencyAmount } from '../currencyAmount'
 import { Token } from '../token'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
