@@ -1,4 +1,4 @@
-import { TradeType } from './constants'
+import { TradeType } from './enums'
 import invariant from 'tiny-invariant'
 import { validateAndParseAddress } from './utils'
 import { CurrencyAmount, ETHER, Percent, Trade } from './entities'

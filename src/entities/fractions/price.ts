@@ -4,11 +4,13 @@ import { currencyEquals } from '../token'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 
-import { BigintIsh, Rounding, TEN } from '../../constants'
+import { TEN } from '../../constants'
+import { Rounding } from '../../enums'
+import { BigintIsh } from '../../types'
 import { Currency } from '../currency'
 import { Route } from '../route'
 import { Fraction } from './fraction'
-import { CurrencyAmount } from '../currencyAmount'
+import { CurrencyAmount } from './currencyAmount'
 
 export class Price extends Fraction {
   public readonly baseCurrency: Currency // input i.e. denominator

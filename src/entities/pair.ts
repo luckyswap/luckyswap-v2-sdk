@@ -1,3 +1,4 @@
+import { FACTORY_ADDRESSES } from './../constants'
 import { Price } from './fractions/price'
 import { TokenAmount } from './fractions/tokenAmount'
 import invariant from 'tiny-invariant'
@@ -5,18 +6,10 @@ import JSBI from 'jsbi'
 import { pack, keccak256 } from '@ethersproject/solidity'
 import { getCreate2Address } from '@ethersproject/address'
 
-import {
-  BigintIsh,
-  FACTORY_ADDRESS,
-  INIT_CODE_HASH,
-  MINIMUM_LIQUIDITY,
-  ZERO,
-  ONE,
-  FIVE,
-  _998,
-  _1000,
-  ChainId
-} from '../constants'
+import { INIT_CODE_HASH, MINIMUM_LIQUIDITY, ZERO, ONE, FIVE, _998, _1000 } from '../constants'
+
+import { BigintIsh } from '../types'
+import { ChainId } from '../enums'
 import { sqrt, parseBigintIsh } from '../utils'
 import { InsufficientReservesError, InsufficientInputAmountError } from '../errors'
 import { Token } from './token'
@@ -30,13 +23,15 @@ export class Pair {
   public static getAddress(tokenA: Token, tokenB: Token): string {
     const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
 
+    const factoryAddress = FACTORY_ADDRESSES[tokenA.chainId]
+
     if (PAIR_ADDRESS_CACHE?.[tokens[0].address]?.[tokens[1].address] === undefined) {
       PAIR_ADDRESS_CACHE = {
         ...PAIR_ADDRESS_CACHE,
         [tokens[0].address]: {
           ...PAIR_ADDRESS_CACHE?.[tokens[0].address],
           [tokens[1].address]: getCreate2Address(
-            FACTORY_ADDRESS,
+            factoryAddress,
             keccak256(['bytes'], [pack(['address', 'address'], [tokens[0].address, tokens[1].address])]),
             INIT_CODE_HASH
           )
