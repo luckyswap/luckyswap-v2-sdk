@@ -1,9 +1,10 @@
+import { ChainId, TradeType } from '../enums'
 import invariant from 'tiny-invariant'
 
-import { ChainId, ONE, TradeType, ZERO } from '../constants'
+import { ONE, ZERO } from '../constants'
 import { sortedInsert } from '../utils'
 import { Currency, ETHER } from './currency'
-import { CurrencyAmount } from './fractions/currencyAmount'
+import { CurrencyAmount } from './currencyAmount'
 import { Fraction } from './fractions/fraction'
 import { Percent } from './fractions/percent'
 import { Price } from './fractions/price'
