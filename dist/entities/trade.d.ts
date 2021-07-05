@@ -1,5 +1,5 @@
 import { TradeType } from '../enums';
-import { Currency } from './currency';
+import { Currency } from './Currency';
 import { CurrencyAmount } from './fractions/currencyAmount';
 import { Percent } from './fractions/percent';
 import { Price } from './fractions/price';

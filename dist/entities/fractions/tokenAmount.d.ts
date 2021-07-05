@@ -1,5 +1,5 @@
 import { CurrencyAmount } from './currencyAmount';
-import { Token } from '../token';
+import { Token } from '../Token';
 import { BigintIsh } from '../../types';
 export declare class TokenAmount extends CurrencyAmount {
     readonly token: Token;

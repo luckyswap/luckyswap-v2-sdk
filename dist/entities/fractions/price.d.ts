@@ -1,6 +1,6 @@
 import { Rounding } from '../../enums';
 import { BigintIsh } from '../../types';
-import { Currency } from '../currency';
+import { Currency } from '../Currency';
 import { Route } from '../route';
 import { Fraction } from './fraction';
 import { CurrencyAmount } from './currencyAmount';

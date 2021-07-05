@@ -12,7 +12,7 @@ import { BigintIsh } from '../types'
 import { ChainId } from '../enums'
 import { sqrt, parseBigintIsh } from '../utils'
 import { InsufficientReservesError, InsufficientInputAmountError } from '../errors'
-import { Token } from './token'
+import { Token } from './Token'
 
 let PAIR_ADDRESS_CACHE: { [token0Address: string]: { [token1Address: string]: string } } = {}
 

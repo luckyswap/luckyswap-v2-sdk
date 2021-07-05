@@ -1,17 +1,20 @@
-import { ChainId } from '../enums/ChainId';
-import { Currency } from './currency';
+import { AbstractCurrency } from './AbstractCurrency';
+import { ChainId } from '../enums';
+import { Currency } from './Currency';
 /**
  * Represents an ERC20 token with a unique address and some metadata.
  */
-export declare class Token extends Currency {
+export declare class Token extends AbstractCurrency {
     readonly chainId: ChainId;
     readonly address: string;
+    readonly isNative: false;
+    readonly isToken: true;
     constructor(chainId: ChainId, address: string, decimals: number, symbol?: string, name?: string);
     /**
      * Returns true if the two tokens are equivalent, i.e. have the same chainId and address.
      * @param other other token to compare
      */
-    equals(other: Token): boolean;
+    equals(other: Currency): boolean;
     /**
      * Returns true if the address of this token sorts before the address of the other token
      * @param other other token to compare
@@ -19,15 +22,15 @@ export declare class Token extends Currency {
      * @throws if the tokens are on different chains
      */
     sortsBefore(other: Token): boolean;
+    /**
+     * Return this token, which does not need to be wrapped
+     */
+    get wrapped(): Token;
 }
 /**
  * Compares two currencies for equality
  */
 export declare function currencyEquals(currencyA: Currency, currencyB: Currency): boolean;
-export declare const WETH: {
-    56: Token;
-    97: Token;
-    4: Token;
-    137: Token;
-    80001: Token;
+export declare const WNATIVE: {
+    [chainId in ChainId]: Token;
 };

@@ -1,8 +1,8 @@
 import { ChainId } from '../enums'
 import invariant from 'tiny-invariant'
 
-import { Currency, ETHER } from './currency'
-import { Token, WETH } from './token'
+import { Currency } from './Currency'
+import { Token } from './Token'
 import { Pair } from './pair'
 import { Price } from './fractions/price'
 
@@ -15,23 +15,16 @@ export class Route {
 
   public constructor(pairs: Pair[], input: Currency, output?: Currency) {
     invariant(pairs.length > 0, 'PAIRS')
+    const chainId: number = pairs[0].chainId
     invariant(
-      pairs.every(pair => pair.chainId === pairs[0].chainId),
+      pairs.every(pair => pair.chainId === chainId),
       'CHAIN_IDS'
     )
-    invariant(
-      (input instanceof Token && pairs[0].involvesToken(input)) ||
-        (input === ETHER && pairs[0].involvesToken(WETH[pairs[0].chainId])),
-      'INPUT'
-    )
-    invariant(
-      typeof output === 'undefined' ||
-        (output instanceof Token && pairs[pairs.length - 1].involvesToken(output)) ||
-        (output === ETHER && pairs[pairs.length - 1].involvesToken(WETH[pairs[0].chainId])),
-      'OUTPUT'
-    )
+    const wrappedInput = input.wrapped
+    invariant(pairs[0].involvesToken(wrappedInput), 'INPUT')
+    invariant(typeof output === 'undefined' || pairs[pairs.length - 1].involvesToken(output.wrapped), 'OUTPUT')
 
-    const path: Token[] = [input instanceof Token ? input : WETH[pairs[0].chainId]]
+    const path: Token[] = [wrappedInput]
     for (const [i, pair] of pairs.entries()) {
       const currentInput = path[i]
       invariant(currentInput.equals(pair.token0) || currentInput.equals(pair.token1), 'PATH')

@@ -1,4 +1,5 @@
 export * from './addresses'
+export * from './natives'
 
 import JSBI from 'jsbi'
 

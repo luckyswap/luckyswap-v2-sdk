@@ -1,6 +1,6 @@
 import { Pair } from './entities/pair';
 import { ChainId } from './enums';
-import { Token } from './entities/token';
+import { Token } from './entities/Token';
 /**
  * Contains methods for constructing instances of pairs and tokens from on-chain data.
  */

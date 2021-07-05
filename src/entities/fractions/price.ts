@@ -1,13 +1,12 @@
-import { Token } from '../token'
+import { Token } from '../Token'
 import { TokenAmount } from './tokenAmount'
-import { currencyEquals } from '../token'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 
 import { TEN } from '../../constants'
 import { Rounding } from '../../enums'
 import { BigintIsh } from '../../types'
-import { Currency } from '../currency'
+import { Currency } from '../Currency'
 import { Route } from '../route'
 import { Fraction } from './fraction'
 import { CurrencyAmount } from './currencyAmount'
@@ -54,18 +53,18 @@ export class Price extends Fraction {
   }
 
   public multiply(other: Price): Price {
-    invariant(currencyEquals(this.quoteCurrency, other.baseCurrency), 'TOKEN')
+    invariant(this.quoteCurrency.equals(other.baseCurrency), 'TOKEN')
     const fraction = super.multiply(other)
     return new Price(this.baseCurrency, other.quoteCurrency, fraction.denominator, fraction.numerator)
   }
 
   // performs floor division on overflow
   public quote(currencyAmount: CurrencyAmount): CurrencyAmount {
-    invariant(currencyEquals(currencyAmount.currency, this.baseCurrency), 'TOKEN')
+    invariant(currencyAmount.currency.equals(this.baseCurrency), 'TOKEN')
     if (this.quoteCurrency instanceof Token) {
       return new TokenAmount(this.quoteCurrency, super.multiply(currencyAmount.raw).quotient)
     }
-    return CurrencyAmount.ether(super.multiply(currencyAmount.raw).quotient)
+    return CurrencyAmount.fromRawAmount(currencyAmount.currency, super.multiply(currencyAmount.raw).quotient)
   }
 
   public toSignificant(significantDigits: number = 6, format?: object, rounding?: Rounding): string {

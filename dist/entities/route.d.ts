@@ -1,6 +1,6 @@
 import { ChainId } from '../enums';
-import { Currency } from './currency';
-import { Token } from './token';
+import { Currency } from './Currency';
+import { Token } from './Token';
 import { Pair } from './pair';
 import { Price } from './fractions/price';
 export declare class Route {

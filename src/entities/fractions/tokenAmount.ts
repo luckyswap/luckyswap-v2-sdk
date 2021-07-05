@@ -1,5 +1,5 @@
 import { CurrencyAmount } from './currencyAmount'
-import { Token } from '../token'
+import { Token } from '../Token'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 

@@ -7,7 +7,7 @@ import ILuckyswapPair from '@luckyswap/v2-core/build/LuckyswapPair.json'
 import invariant from 'tiny-invariant'
 import ERC20 from './abis/ERC20.json'
 import { ChainId } from './enums'
-import { Token } from './entities/token'
+import { Token } from './entities/Token'
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {
   [ChainId.MAINNET]: {
