@@ -772,7 +772,7 @@ var Price = /*#__PURE__*/function (_Fraction) {
       return new TokenAmount(this.quoteCurrency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
     }
 
-    return CurrencyAmount["native"](_Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient, currencyAmount.currency.chainId);
+    return CurrencyAmount.fromRawAmount(currencyAmount.currency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
   };
 
   _proto.toSignificant = function toSignificant(significantDigits, format, rounding) {
