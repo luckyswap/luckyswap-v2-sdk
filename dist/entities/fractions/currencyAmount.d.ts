@@ -3,7 +3,7 @@ import JSBI from 'jsbi';
 import { Fraction } from './fraction';
 import { Rounding } from '../../enums/Rounding';
 import { BigintIsh } from '../../types';
-import { ChainId } from 'enums/ChainId';
+import { ChainId } from '../../enums/ChainId';
 export declare class CurrencyAmount extends Fraction {
     readonly currency: Currency;
     /**

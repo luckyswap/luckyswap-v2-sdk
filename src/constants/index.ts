@@ -1,9 +1,15 @@
+import { ChainId } from '../enums/ChainId'
 export * from './addresses'
 export * from './natives'
 
 import JSBI from 'jsbi'
 
-export const INIT_CODE_HASH = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659'
+export const INIT_CODE_HASHES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81',
+  [ChainId.MATIC]: '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659',
+  [ChainId.MATIC_TESTNET]: '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659',
+  [ChainId.BSCTESTNET]: '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659'
+}
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)
 

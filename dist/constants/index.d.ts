@@ -1,7 +1,10 @@
+import { ChainId } from '../enums/ChainId';
 export * from './addresses';
 export * from './natives';
 import JSBI from 'jsbi';
-export declare const INIT_CODE_HASH = "0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659";
+export declare const INIT_CODE_HASHES: {
+    [chainId in ChainId]: string;
+};
 export declare const MINIMUM_LIQUIDITY: JSBI;
 export declare const ZERO: JSBI;
 export declare const ONE: JSBI;

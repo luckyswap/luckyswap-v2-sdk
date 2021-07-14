@@ -25,8 +25,8 @@ var ILuckyswapPair = _interopDefault(require('@luckyswap/v2-core/build/Luckyswap
 })(exports.ChainId || (exports.ChainId = {}));
 
 var _FACTORY_ADDRESSES, _ROUTER_ADDRESSES;
-var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[exports.ChainId.MAINNET] = '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac', _FACTORY_ADDRESSES[exports.ChainId.MATIC] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[exports.ChainId.BSCTESTNET] = '0x8a13265913EF40C4EA6D8519c2281c2A1fC5e93d', _FACTORY_ADDRESSES);
-var ROUTER_ADDRESSES = (_ROUTER_ADDRESSES = {}, _ROUTER_ADDRESSES[exports.ChainId.MAINNET] = '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac', _ROUTER_ADDRESSES[exports.ChainId.MATIC] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _ROUTER_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd', _ROUTER_ADDRESSES[exports.ChainId.BSCTESTNET] = '0x09FceE7287f882c5eEAb8032A64FDE54Fc1dD055', _ROUTER_ADDRESSES);
+var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[exports.ChainId.MAINNET] = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4', _FACTORY_ADDRESSES[exports.ChainId.MATIC] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[exports.ChainId.BSCTESTNET] = '0x7f86C595905506B9cab69Af085d969F2a2f06adC', _FACTORY_ADDRESSES);
+var ROUTER_ADDRESSES = (_ROUTER_ADDRESSES = {}, _ROUTER_ADDRESSES[exports.ChainId.MAINNET] = '0x5c75d3A4342f4874b33DE6E0609535Da0b9e4C5B', _ROUTER_ADDRESSES[exports.ChainId.MATIC] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _ROUTER_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd', _ROUTER_ADDRESSES[exports.ChainId.BSCTESTNET] = '0xAED59cDE6f480481d0096440cDBe6F092E96b336', _ROUTER_ADDRESSES);
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -388,8 +388,8 @@ Binance._cache = {};
 var _NATIVE;
 var NATIVE = (_NATIVE = {}, _NATIVE[exports.ChainId.MAINNET] = /*#__PURE__*/Binance.onChain(exports.ChainId.MAINNET), _NATIVE[exports.ChainId.BSCTESTNET] = /*#__PURE__*/Binance.onChain(exports.ChainId.BSCTESTNET), _NATIVE[exports.ChainId.MATIC] = /*#__PURE__*/Matic.onChain(exports.ChainId.MATIC), _NATIVE[exports.ChainId.MATIC_TESTNET] = /*#__PURE__*/Matic.onChain(exports.ChainId.MATIC_TESTNET), _NATIVE);
 
-var _SOLIDITY_TYPE_MAXIMA;
-var INIT_CODE_HASH = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659';
+var _INIT_CODE_HASHES, _SOLIDITY_TYPE_MAXIMA;
+var INIT_CODE_HASHES = (_INIT_CODE_HASHES = {}, _INIT_CODE_HASHES[exports.ChainId.MAINNET] = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81', _INIT_CODE_HASHES[exports.ChainId.MATIC] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASHES[exports.ChainId.MATIC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASHES[exports.ChainId.BSCTESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASHES);
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
 var ONE = /*#__PURE__*/JSBI.BigInt(1);
@@ -772,7 +772,7 @@ var Price = /*#__PURE__*/function (_Fraction) {
       return new TokenAmount(this.quoteCurrency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
     }
 
-    return CurrencyAmount["native"](_Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient, currencyAmount.currency.chainId);
+    return CurrencyAmount.fromRawAmount(currencyAmount.currency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
   };
 
   _proto.toSignificant = function toSignificant(significantDigits, format, rounding) {
@@ -868,7 +868,7 @@ var Pair = /*#__PURE__*/function () {
     if (((_PAIR_ADDRESS_CACHE = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE === void 0 ? void 0 : (_PAIR_ADDRESS_CACHE$t = _PAIR_ADDRESS_CACHE[tokens[0].address]) === null || _PAIR_ADDRESS_CACHE$t === void 0 ? void 0 : _PAIR_ADDRESS_CACHE$t[tokens[1].address]) === undefined) {
       var _PAIR_ADDRESS_CACHE2, _extends2, _extends3;
 
-      PAIR_ADDRESS_CACHE = _extends({}, PAIR_ADDRESS_CACHE, (_extends3 = {}, _extends3[tokens[0].address] = _extends({}, (_PAIR_ADDRESS_CACHE2 = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE2 === void 0 ? void 0 : _PAIR_ADDRESS_CACHE2[tokens[0].address], (_extends2 = {}, _extends2[tokens[1].address] = address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [tokens[0].address, tokens[1].address])]), INIT_CODE_HASH), _extends2)), _extends3));
+      PAIR_ADDRESS_CACHE = _extends({}, PAIR_ADDRESS_CACHE, (_extends3 = {}, _extends3[tokens[0].address] = _extends({}, (_PAIR_ADDRESS_CACHE2 = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE2 === void 0 ? void 0 : _PAIR_ADDRESS_CACHE2[tokens[0].address], (_extends2 = {}, _extends2[tokens[1].address] = address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [tokens[0].address, tokens[1].address])]), INIT_CODE_HASHES[tokens[0].chainId]), _extends2)), _extends3));
     }
 
     return PAIR_ADDRESS_CACHE[tokens[0].address][tokens[1].address];
@@ -1474,7 +1474,7 @@ var computePairAddress = function computePairAddress(_ref) {
       token1 = _ref2[1]; // does safety checks
 
 
-  return address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASH);
+  return address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASHES[token0.chainId]);
 };
 
 function toHex(currencyAmount) {
@@ -1688,7 +1688,7 @@ exports.FACTORY_ADDRESSES = FACTORY_ADDRESSES;
 exports.FIVE = FIVE;
 exports.Fetcher = Fetcher;
 exports.Fraction = Fraction;
-exports.INIT_CODE_HASH = INIT_CODE_HASH;
+exports.INIT_CODE_HASHES = INIT_CODE_HASHES;
 exports.InsufficientInputAmountError = InsufficientInputAmountError;
 exports.InsufficientReservesError = InsufficientReservesError;
 exports.MINIMUM_LIQUIDITY = MINIMUM_LIQUIDITY;
