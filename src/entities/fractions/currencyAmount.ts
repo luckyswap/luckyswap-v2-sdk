@@ -10,7 +10,7 @@ import { Fraction } from './fraction'
 import { Rounding } from '../../enums/Rounding'
 import { BigintIsh } from '../../types'
 import { NATIVE } from '../../constants'
-import { ChainId } from 'enums/ChainId'
+import { ChainId } from '../../enums/ChainId'
 
 const Big = toFormat(_Big)
 

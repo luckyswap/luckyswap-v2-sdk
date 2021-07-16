@@ -6,7 +6,7 @@ import JSBI from 'jsbi'
 import { pack, keccak256 } from '@ethersproject/solidity'
 import { getCreate2Address } from '@ethersproject/address'
 
-import { INIT_CODE_HASH, MINIMUM_LIQUIDITY, ZERO, ONE, FIVE, _998, _1000 } from '../constants'
+import { INIT_CODE_HASHES, MINIMUM_LIQUIDITY, ZERO, ONE, FIVE, _998, _1000 } from '../constants'
 
 import { BigintIsh } from '../types'
 import { ChainId } from '../enums'
@@ -33,7 +33,7 @@ export class Pair {
           [tokens[1].address]: getCreate2Address(
             factoryAddress,
             keccak256(['bytes'], [pack(['address', 'address'], [tokens[0].address, tokens[1].address])]),
-            INIT_CODE_HASH
+            INIT_CODE_HASHES[tokens[0].chainId]
           )
         }
       }
