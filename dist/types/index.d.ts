@@ -1,3 +1,3 @@
 export type { BigintIsh } from './BigintIsh';
-export type { AddressMap } from 'types/AddressMap';
-export type { TokenMap } from 'types/TokenMap';
+export type { AddressMap } from './AddressMap';
+export type { TokenMap } from './TokenMap';
