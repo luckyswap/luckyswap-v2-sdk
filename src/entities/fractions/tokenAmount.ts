@@ -1,26 +1,27 @@
-import { CurrencyAmount } from './currencyAmount'
-import { Token } from '../Token'
 import invariant from 'tiny-invariant'
-import JSBI from 'jsbi'
-
 import { BigintIsh } from '../../types'
+import { Token } from '../Token'
+import { CurrencyAmount } from './currencyAmount'
+
 
 export class TokenAmount extends CurrencyAmount {
   public readonly token: Token
 
   // amount _must_ be raw, i.e. in the native representation
-  public constructor(token: Token, amount: BigintIsh) {
-    super(token, amount)
+  public constructor(token: Token, numerator: BigintIsh, denominator?: BigintIsh) {
+    super(token, numerator, denominator)
     this.token = token
   }
 
   public add(other: TokenAmount): TokenAmount {
     invariant(this.token.equals(other.token), 'TOKEN')
-    return new TokenAmount(this.token, JSBI.add(this.raw, other.raw))
+    const added = super.add(other)
+    return new TokenAmount(this.token, added.numerator, added.denominator)
   }
 
   public subtract(other: TokenAmount): TokenAmount {
     invariant(this.token.equals(other.token), 'TOKEN')
-    return new TokenAmount(this.token, JSBI.subtract(this.raw, other.raw))
+    const subtracted = super.subtract(other)
+    return new TokenAmount(this.token, subtracted.numerator, subtracted.denominator)
   }
 }

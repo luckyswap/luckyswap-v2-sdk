@@ -47,7 +47,7 @@ export interface SwapParameters {
 }
 
 function toHex(currencyAmount: CurrencyAmount) {
-  return `0x${currencyAmount.raw.toString(16)}`
+  return `0x${currencyAmount.quotient.toString(16)}`
 }
 
 const ZERO_HEX = '0x0'

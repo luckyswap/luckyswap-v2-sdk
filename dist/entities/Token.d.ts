@@ -31,6 +31,3 @@ export declare class Token extends AbstractCurrency {
  * Compares two currencies for equality
  */
 export declare function currencyEquals(currencyA: Currency, currencyB: Currency): boolean;
-export declare const WNATIVE: {
-    [chainId in ChainId]: Token;
-};
