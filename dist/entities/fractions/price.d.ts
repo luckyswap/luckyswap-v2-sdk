@@ -2,8 +2,8 @@ import { Rounding } from '../../enums';
 import { BigintIsh } from '../../types';
 import { Currency } from '../Currency';
 import { Route } from '../route';
-import { Fraction } from './fraction';
 import { CurrencyAmount } from './currencyAmount';
+import { Fraction } from './fraction';
 export declare class Price extends Fraction {
     readonly baseCurrency: Currency;
     readonly quoteCurrency: Currency;

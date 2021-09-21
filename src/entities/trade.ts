@@ -1,3 +1,4 @@
+import { WNATIVE } from 'constants/tokens'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../constants'
 import { ChainId, TradeType } from '../enums'
@@ -10,7 +11,6 @@ import { Price } from './fractions/price'
 import { TokenAmount } from './fractions/tokenAmount'
 import { Pair } from './pair'
 import { Route } from './route'
-import { WNATIVE } from './Token'
 
 /**
  * Returns the percent difference between the mid price and the execution price, i.e. price impact.
@@ -19,9 +19,9 @@ import { WNATIVE } from './Token'
  * @param outputAmount the output amount of the trade
  */
 function computePriceImpact(midPrice: Price, inputAmount: CurrencyAmount, outputAmount: CurrencyAmount): Percent {
-  const exactQuote = midPrice.raw.multiply(inputAmount.raw)
+  const exactQuote = midPrice.raw.multiply(inputAmount.quotient)
   // calculate slippage := (exactQuote - outputAmount) / exactQuote
-  const slippage = exactQuote.subtract(outputAmount.raw).divide(exactQuote)
+  const slippage = exactQuote.subtract(outputAmount.quotient).divide(exactQuote)
   return new Percent(slippage.numerator, slippage.denominator)
 }
 
@@ -89,7 +89,7 @@ export interface BestTradeOptions {
  */
 function wrappedAmount(currencyAmount: CurrencyAmount, chainId: ChainId): TokenAmount {
   if (currencyAmount instanceof TokenAmount) return currencyAmount
-  if (currencyAmount.currency.isNative) return new TokenAmount(WNATIVE[chainId], currencyAmount.raw)
+  if (currencyAmount.currency.isNative) return new TokenAmount(WNATIVE[chainId], currencyAmount.quotient)
   invariant(false, 'CURRENCY')
 }
 /**
@@ -160,7 +160,7 @@ export class Trade {
         nextPairs[i] = nextPair
       }
       this.inputAmount = amount
-      this.outputAmount = CurrencyAmount.fromRawAmount(route.output, tokenAmounts[tokenAmounts.length - 1].raw)
+      this.outputAmount = CurrencyAmount.fromRawAmount(route.output, tokenAmounts[tokenAmounts.length - 1].quotient)
     } else {
       invariant(amount.currency.equals(route.output), 'OUTPUT')
       tokenAmounts[tokenAmounts.length - 1] = wrappedAmount(amount, route.chainId)
@@ -170,15 +170,15 @@ export class Trade {
         tokenAmounts[i - 1] = inputAmount
         nextPairs[i - 1] = nextPair
       }
-      this.inputAmount = CurrencyAmount.fromRawAmount(route.input, tokenAmounts[0].raw)
+      this.inputAmount = CurrencyAmount.fromRawAmount(route.input, tokenAmounts[0].quotient)
       this.outputAmount = amount
     }
 
     this.executionPrice = new Price(
       this.inputAmount.currency,
       this.outputAmount.currency,
-      this.inputAmount.raw,
-      this.outputAmount.raw
+      this.inputAmount.quotient,
+      this.outputAmount.quotient
     )
     this.nextMidPrice = Price.fromRoute(new Route(nextPairs, route.input))
     this.priceImpact = computePriceImpact(route.midPrice, this.inputAmount, this.outputAmount)
@@ -196,7 +196,7 @@ export class Trade {
       const slippageAdjustedAmountOut = new Fraction(ONE)
         .add(slippageTolerance)
         .invert()
-        .multiply(this.outputAmount.raw).quotient
+        .multiply(this.outputAmount.quotient).quotient
       return CurrencyAmount.fromRawAmount(this.outputAmount.currency, slippageAdjustedAmountOut)
     }
   }
@@ -210,7 +210,8 @@ export class Trade {
     if (this.tradeType === TradeType.EXACT_INPUT) {
       return this.inputAmount
     } else {
-      const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(this.inputAmount.raw).quotient
+      const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(this.inputAmount.quotient)
+        .quotient
       return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn)
       // return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn);
     }
@@ -258,7 +259,7 @@ export class Trade {
         ;[amountOut] = pair.getOutputAmount(amountIn)
       } catch (error) {
         // input too low
-        if (error.isInsufficientInputAmountError) {
+        if ((error as any).isInsufficientInputAmountError) {
           continue
         }
         throw error
@@ -346,7 +347,7 @@ export class Trade {
         ;[amountIn] = pair.getInputAmount(amountOut)
       } catch (error) {
         // not enough liquidity in this pair
-        if (error.isInsufficientReservesError) {
+        if ((error as any).isInsufficientReservesError) {
           continue
         }
         throw error

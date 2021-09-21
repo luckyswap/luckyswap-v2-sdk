@@ -5,6 +5,7 @@ export declare class Fraction {
     readonly numerator: JSBI;
     readonly denominator: JSBI;
     constructor(numerator: BigintIsh, denominator?: BigintIsh);
+    private static tryParseFraction;
     get quotient(): JSBI;
     get remainder(): Fraction;
     invert(): Fraction;
@@ -17,4 +18,8 @@ export declare class Fraction {
     divide(other: Fraction | BigintIsh): Fraction;
     toSignificant(significantDigits: number, format?: object, rounding?: Rounding): string;
     toFixed(decimalPlaces: number, format?: object, rounding?: Rounding): string;
+    /**
+     * Helper method for converting any super class back to a fraction
+     */
+    get asFraction(): Fraction;
 }

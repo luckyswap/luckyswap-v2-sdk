@@ -12,21 +12,49 @@ var _Big = _interopDefault(require('big.js'));
 var toFormat = _interopDefault(require('toformat'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var solidity = require('@ethersproject/solidity');
+var tokens = require('constants/tokens');
 var contracts = require('@ethersproject/contracts');
 var networks = require('@ethersproject/networks');
 var providers = require('@ethersproject/providers');
 var ILuckyswapPair = _interopDefault(require('@luckyswap/v2-core/build/LuckyswapPair.json'));
 
 (function (ChainId) {
+  ChainId[ChainId["MAINNET"] = 1] = "MAINNET";
+  ChainId[ChainId["ROPSTEN"] = 3] = "ROPSTEN";
+  ChainId[ChainId["RINKEBY"] = 4] = "RINKEBY";
+  ChainId[ChainId["G\xD6RLI"] = 5] = "G\xD6RLI";
+  ChainId[ChainId["KOVAN"] = 42] = "KOVAN";
   ChainId[ChainId["MATIC"] = 137] = "MATIC";
   ChainId[ChainId["MATIC_TESTNET"] = 80001] = "MATIC_TESTNET";
-  ChainId[ChainId["MAINNET"] = 56] = "MAINNET";
-  ChainId[ChainId["BSCTESTNET"] = 97] = "BSCTESTNET";
+  ChainId[ChainId["FANTOM"] = 250] = "FANTOM";
+  ChainId[ChainId["FANTOM_TESTNET"] = 4002] = "FANTOM_TESTNET";
+  ChainId[ChainId["XDAI"] = 100] = "XDAI";
+  ChainId[ChainId["BSC"] = 56] = "BSC";
+  ChainId[ChainId["BSC_TESTNET"] = 97] = "BSC_TESTNET";
+  ChainId[ChainId["ARBITRUM"] = 42161] = "ARBITRUM";
+  ChainId[ChainId["ARBITRUM_TESTNET"] = 79377087078960] = "ARBITRUM_TESTNET";
+  ChainId[ChainId["MOONBEAM_TESTNET"] = 1287] = "MOONBEAM_TESTNET";
+  ChainId[ChainId["AVALANCHE"] = 43114] = "AVALANCHE";
+  ChainId[ChainId["AVALANCHE_TESTNET"] = 43113] = "AVALANCHE_TESTNET";
+  ChainId[ChainId["HECO"] = 128] = "HECO";
+  ChainId[ChainId["HECO_TESTNET"] = 256] = "HECO_TESTNET";
+  ChainId[ChainId["HARMONY"] = 1666600000] = "HARMONY";
+  ChainId[ChainId["HARMONY_TESTNET"] = 1666700000] = "HARMONY_TESTNET";
+  ChainId[ChainId["OKEX"] = 66] = "OKEX";
+  ChainId[ChainId["OKEX_TESTNET"] = 65] = "OKEX_TESTNET";
+  ChainId[ChainId["CELO"] = 42220] = "CELO";
+  ChainId[ChainId["PALM"] = 11297108109] = "PALM";
+  ChainId[ChainId["PALM_TESTNET"] = 11297108099] = "PALM_TESTNET";
+  ChainId[ChainId["MOONRIVER"] = 1285] = "MOONRIVER";
+  ChainId[ChainId["FUSE"] = 122] = "FUSE";
 })(exports.ChainId || (exports.ChainId = {}));
 
-var _FACTORY_ADDRESSES, _ROUTER_ADDRESSES;
-var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[exports.ChainId.MAINNET] = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4', _FACTORY_ADDRESSES[exports.ChainId.MATIC] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[exports.ChainId.BSCTESTNET] = '0x7f86C595905506B9cab69Af085d969F2a2f06adC', _FACTORY_ADDRESSES);
-var ROUTER_ADDRESSES = (_ROUTER_ADDRESSES = {}, _ROUTER_ADDRESSES[exports.ChainId.MAINNET] = '0x5c75d3A4342f4874b33DE6E0609535Da0b9e4C5B', _ROUTER_ADDRESSES[exports.ChainId.MATIC] = '0x8a13265913EF40C4EA6D8519c2281c2A1fC5e93d', _ROUTER_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd', _ROUTER_ADDRESSES[exports.ChainId.BSCTESTNET] = '0xAED59cDE6f480481d0096440cDBe6F092E96b336', _ROUTER_ADDRESSES);
+var _USDC_ADDRESS, _FACTORY_ADDRESSES, _ROUTER_ADDRESSES, _WETH9_ADDRESS, _WNATIVE_ADDRESS;
+var USDC_ADDRESS = (_USDC_ADDRESS = {}, _USDC_ADDRESS[exports.ChainId.MAINNET] = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', _USDC_ADDRESS[exports.ChainId.ROPSTEN] = '0x0D9C8723B343A8368BebE0B5E89273fF8D712e3C', _USDC_ADDRESS[exports.ChainId.KOVAN] = '0xb7a4F3E9097C08dA09517b5aB877F7a917224ede', _USDC_ADDRESS[exports.ChainId.MATIC] = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', _USDC_ADDRESS[exports.ChainId.FANTOM] = '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', _USDC_ADDRESS[exports.ChainId.BSC] = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', _USDC_ADDRESS[exports.ChainId.HARMONY] = '0x985458E523dB3d53125813eD68c274899e9DfAb4', _USDC_ADDRESS[exports.ChainId.HECO] = '0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B', _USDC_ADDRESS[exports.ChainId.OKEX] = '0xc946DAf81b08146B1C7A8Da2A851Ddf2B3EAaf85', _USDC_ADDRESS[exports.ChainId.XDAI] = '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83', _USDC_ADDRESS[exports.ChainId.ARBITRUM] = '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', _USDC_ADDRESS[exports.ChainId.AVALANCHE] = '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664', _USDC_ADDRESS);
+var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[exports.ChainId.MAINNET] = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4', _FACTORY_ADDRESSES[exports.ChainId.MATIC] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[exports.ChainId.BSC_TESTNET] = '0x7f86C595905506B9cab69Af085d969F2a2f06adC', _FACTORY_ADDRESSES);
+var ROUTER_ADDRESSES = (_ROUTER_ADDRESSES = {}, _ROUTER_ADDRESSES[exports.ChainId.MAINNET] = '0x5c75d3A4342f4874b33DE6E0609535Da0b9e4C5B', _ROUTER_ADDRESSES[exports.ChainId.MATIC] = '0x8a13265913EF40C4EA6D8519c2281c2A1fC5e93d', _ROUTER_ADDRESSES[exports.ChainId.MATIC_TESTNET] = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd', _ROUTER_ADDRESSES[exports.ChainId.BSC_TESTNET] = '0xAED59cDE6f480481d0096440cDBe6F092E96b336', _ROUTER_ADDRESSES);
+var WETH9_ADDRESS = (_WETH9_ADDRESS = {}, _WETH9_ADDRESS[exports.ChainId.MAINNET] = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', _WETH9_ADDRESS[exports.ChainId.ROPSTEN] = '0xc778417E063141139Fce010982780140Aa0cD5Ab', _WETH9_ADDRESS[exports.ChainId.RINKEBY] = '0xc778417E063141139Fce010982780140Aa0cD5Ab', _WETH9_ADDRESS[exports.ChainId.GÖRLI] = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6', _WETH9_ADDRESS[exports.ChainId.KOVAN] = '0xd0A1E359811322d97991E03f863a0C30C2cF029C', _WETH9_ADDRESS[exports.ChainId.ARBITRUM] = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', _WETH9_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = '0xf8456e5e6A225C2C1D74D8C9a4cB2B1d5dc1153b', _WETH9_ADDRESS[exports.ChainId.BSC] = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', _WETH9_ADDRESS[exports.ChainId.FANTOM] = '0x74b23882a30290451A17c44f4F05243b6b58C76d', _WETH9_ADDRESS[exports.ChainId.MATIC] = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', _WETH9_ADDRESS[exports.ChainId.OKEX] = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', _WETH9_ADDRESS[exports.ChainId.HECO] = '0x64FF637fB478863B7468bc97D30a5bF3A428a1fD', _WETH9_ADDRESS[exports.ChainId.HARMONY] = '0x6983D1E6DEf3690C4d616b13597A09e6193EA013', _WETH9_ADDRESS[exports.ChainId.XDAI] = '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1', _WETH9_ADDRESS[exports.ChainId.AVALANCHE] = '0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15', _WETH9_ADDRESS);
+var WNATIVE_ADDRESS = (_WNATIVE_ADDRESS = {}, _WNATIVE_ADDRESS[exports.ChainId.MAINNET] = WETH9_ADDRESS[exports.ChainId.MAINNET], _WNATIVE_ADDRESS[exports.ChainId.ROPSTEN] = WETH9_ADDRESS[exports.ChainId.ROPSTEN], _WNATIVE_ADDRESS[exports.ChainId.RINKEBY] = WETH9_ADDRESS[exports.ChainId.RINKEBY], _WNATIVE_ADDRESS[exports.ChainId.GÖRLI] = WETH9_ADDRESS[exports.ChainId.GÖRLI], _WNATIVE_ADDRESS[exports.ChainId.KOVAN] = WETH9_ADDRESS[exports.ChainId.KOVAN], _WNATIVE_ADDRESS[exports.ChainId.ARBITRUM] = WETH9_ADDRESS[exports.ChainId.ARBITRUM], _WNATIVE_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = WETH9_ADDRESS[exports.ChainId.ARBITRUM_TESTNET], _WNATIVE_ADDRESS[exports.ChainId.FANTOM] = '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', _WNATIVE_ADDRESS[exports.ChainId.FANTOM_TESTNET] = '0xf1277d1Ed8AD466beddF92ef448A132661956621', _WNATIVE_ADDRESS[exports.ChainId.MATIC] = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', _WNATIVE_ADDRESS[exports.ChainId.MATIC_TESTNET] = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', _WNATIVE_ADDRESS[exports.ChainId.XDAI] = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d', _WNATIVE_ADDRESS[exports.ChainId.BSC] = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', _WNATIVE_ADDRESS[exports.ChainId.BSC_TESTNET] = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', _WNATIVE_ADDRESS[exports.ChainId.MOONBEAM_TESTNET] = '0xe73763DB808ecCDC0E36bC8E32510ED126910394', _WNATIVE_ADDRESS[exports.ChainId.AVALANCHE] = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', _WNATIVE_ADDRESS[exports.ChainId.AVALANCHE_TESTNET] = '0xd00ae08403B9bbb9124bB305C09058E32C39A48c', _WNATIVE_ADDRESS[exports.ChainId.HECO] = '0x5545153CCFcA01fbd7Dd11C0b23ba694D9509A6F', _WNATIVE_ADDRESS[exports.ChainId.HECO_TESTNET] = '0x5B2DA6F42CA09C77D577a12BeaD0446148830687', _WNATIVE_ADDRESS[exports.ChainId.HARMONY] = '0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a', _WNATIVE_ADDRESS[exports.ChainId.HARMONY_TESTNET] = '0x7a2afac38517d512E55C0bCe3b6805c10a04D60F', _WNATIVE_ADDRESS[exports.ChainId.OKEX] = '0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15', _WNATIVE_ADDRESS[exports.ChainId.OKEX_TESTNET] = '0x2219845942d28716c0F7C605765fABDcA1a7d9E0', _WNATIVE_ADDRESS[exports.ChainId.CELO] = '0x471EcE3750Da237f93B8E339c536989b8978a438', _WNATIVE_ADDRESS[exports.ChainId.PALM] = '0xF98cABF0a963452C5536330408B2590567611a71', _WNATIVE_ADDRESS[exports.ChainId.MOONRIVER] = '0xf50225a84382c74CbdeA10b0c176f71fc3DE0C4d', _WNATIVE_ADDRESS[exports.ChainId.FUSE] = '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629', _WNATIVE_ADDRESS);
 
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -223,6 +251,25 @@ function AbstractCurrency(chainId, decimals, symbol, name) {
   this.name = name;
 };
 
+/**
+ * Represents the native currency of the chain on which it resides, e.g.
+ */
+
+var NativeCurrency = /*#__PURE__*/function (_AbstractCurrency) {
+  _inheritsLoose(NativeCurrency, _AbstractCurrency);
+
+  function NativeCurrency() {
+    var _this;
+
+    _this = _AbstractCurrency.apply(this, arguments) || this;
+    _this.isNative = true;
+    _this.isToken = false;
+    return _this;
+  }
+
+  return NativeCurrency;
+}(AbstractCurrency);
+
 (function (Rounding) {
   Rounding[Rounding["ROUND_DOWN"] = 0] = "ROUND_DOWN";
   Rounding[Rounding["ROUND_HALF_UP"] = 1] = "ROUND_HALF_UP";
@@ -244,7 +291,6 @@ function validateAndParseAddress(address$1) {
   }
 }
 
-var _WNATIVE;
 /**
  * Represents an ERC20 token with a unique address and some metadata.
  */
@@ -315,31 +361,32 @@ function currencyEquals(currencyA, currencyB) {
     return currencyA === currencyB;
   }
 }
-var WNATIVE = (_WNATIVE = {}, _WNATIVE[exports.ChainId.MAINNET] = /*#__PURE__*/new Token(exports.ChainId.MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'), _WNATIVE[exports.ChainId.BSCTESTNET] = /*#__PURE__*/new Token(exports.ChainId.BSCTESTNET, '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', 18, 'WBNB', 'Wrapped BNB'), _WNATIVE[exports.ChainId.MATIC] = /*#__PURE__*/new Token(exports.ChainId.MATIC, '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', 18, 'WMATIC', 'Wrapped Matic'), _WNATIVE[exports.ChainId.MATIC_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.MATIC_TESTNET, '0x5B67676a984807a212b1c59eBFc9B3568a474F0a', 18, 'WMATIC', 'Wrapped Matic'), _WNATIVE);
 
-/**
- * Represents the native currency of the chain on which it resides, e.g.
- */
+var _USDC, _WETH, _WNATIVE;
+var USDC = (_USDC = {}, _USDC[exports.ChainId.MAINNET] = /*#__PURE__*/new Token(exports.ChainId.MAINNET, USDC_ADDRESS[exports.ChainId.MAINNET], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.ROPSTEN] = /*#__PURE__*/new Token(exports.ChainId.ROPSTEN, USDC_ADDRESS[exports.ChainId.ROPSTEN], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.KOVAN] = /*#__PURE__*/new Token(exports.ChainId.KOVAN, USDC_ADDRESS[exports.ChainId.KOVAN], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.MATIC] = /*#__PURE__*/new Token(exports.ChainId.MATIC, USDC_ADDRESS[exports.ChainId.MATIC], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.FANTOM] = /*#__PURE__*/new Token(exports.ChainId.FANTOM, USDC_ADDRESS[exports.ChainId.FANTOM], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.BSC] = /*#__PURE__*/new Token(exports.ChainId.BSC, USDC_ADDRESS[exports.ChainId.BSC], 18, 'USDC', 'USD Coin'), _USDC[exports.ChainId.HARMONY] = /*#__PURE__*/new Token(exports.ChainId.HARMONY, USDC_ADDRESS[exports.ChainId.HARMONY], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.HECO] = /*#__PURE__*/new Token(exports.ChainId.HECO, USDC_ADDRESS[exports.ChainId.HECO], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.OKEX] = /*#__PURE__*/new Token(exports.ChainId.OKEX, USDC_ADDRESS[exports.ChainId.OKEX], 18, 'USDC', 'USD Coin'), _USDC[exports.ChainId.XDAI] = /*#__PURE__*/new Token(exports.ChainId.XDAI, USDC_ADDRESS[exports.ChainId.XDAI], 6, 'USDC', 'USD Coin'), _USDC[exports.ChainId.ARBITRUM] = /*#__PURE__*/new Token(exports.ChainId.ARBITRUM, USDC_ADDRESS[exports.ChainId.ARBITRUM], 6, 'USDC', 'USD Coin'), _USDC);
+var WETH9 = (_WETH = {}, _WETH[exports.ChainId.MAINNET] = /*#__PURE__*/new Token(exports.ChainId.MAINNET, WETH9_ADDRESS[exports.ChainId.MAINNET], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.ROPSTEN] = /*#__PURE__*/new Token(exports.ChainId.ROPSTEN, WETH9_ADDRESS[exports.ChainId.ROPSTEN], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.RINKEBY] = /*#__PURE__*/new Token(exports.ChainId.RINKEBY, WETH9_ADDRESS[exports.ChainId.RINKEBY], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.GÖRLI] = /*#__PURE__*/new Token(exports.ChainId.GÖRLI, WETH9_ADDRESS[exports.ChainId.GÖRLI], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.KOVAN] = /*#__PURE__*/new Token(exports.ChainId.KOVAN, WETH9_ADDRESS[exports.ChainId.KOVAN], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.ARBITRUM] = /*#__PURE__*/new Token(exports.ChainId.ARBITRUM, WETH9_ADDRESS[exports.ChainId.ARBITRUM], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.ARBITRUM_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.ARBITRUM_TESTNET, WETH9_ADDRESS[exports.ChainId.ARBITRUM_TESTNET], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.BSC] = /*#__PURE__*/new Token(exports.ChainId.BSC, WETH9_ADDRESS[exports.ChainId.BSC], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.FANTOM] = /*#__PURE__*/new Token(exports.ChainId.FANTOM, WETH9_ADDRESS[exports.ChainId.FANTOM], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.MATIC] = /*#__PURE__*/new Token(exports.ChainId.MATIC, WETH9_ADDRESS[exports.ChainId.MATIC], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.OKEX] = /*#__PURE__*/new Token(exports.ChainId.OKEX, WETH9_ADDRESS[exports.ChainId.OKEX], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.HECO] = /*#__PURE__*/new Token(exports.ChainId.HECO, WETH9_ADDRESS[exports.ChainId.HECO], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.HARMONY] = /*#__PURE__*/new Token(exports.ChainId.HARMONY, WETH9_ADDRESS[exports.ChainId.HARMONY], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.XDAI] = /*#__PURE__*/new Token(exports.ChainId.XDAI, WETH9_ADDRESS[exports.ChainId.XDAI], 18, 'WETH', 'Wrapped Ether'), _WETH[exports.ChainId.AVALANCHE] = /*#__PURE__*/new Token(exports.ChainId.AVALANCHE, WETH9_ADDRESS[exports.ChainId.AVALANCHE], 18, 'WETH', 'Wrapped Ether'), _WETH);
+var WNATIVE = (_WNATIVE = {}, _WNATIVE[exports.ChainId.MAINNET] = WETH9[exports.ChainId.MAINNET], _WNATIVE[exports.ChainId.ROPSTEN] = WETH9[exports.ChainId.ROPSTEN], _WNATIVE[exports.ChainId.RINKEBY] = WETH9[exports.ChainId.RINKEBY], _WNATIVE[exports.ChainId.GÖRLI] = WETH9[exports.ChainId.GÖRLI], _WNATIVE[exports.ChainId.KOVAN] = WETH9[exports.ChainId.KOVAN], _WNATIVE[exports.ChainId.FANTOM] = /*#__PURE__*/new Token(exports.ChainId.FANTOM, WNATIVE_ADDRESS[exports.ChainId.FANTOM], 18, 'WFTM', 'Wrapped FTM'), _WNATIVE[exports.ChainId.FANTOM_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.FANTOM_TESTNET, WNATIVE_ADDRESS[exports.ChainId.FANTOM_TESTNET], 18, 'FTM', 'Wrapped FTM'), _WNATIVE[exports.ChainId.MATIC] = /*#__PURE__*/new Token(exports.ChainId.MATIC, WNATIVE_ADDRESS[exports.ChainId.MATIC], 18, 'WMATIC', 'Wrapped Matic'), _WNATIVE[exports.ChainId.MATIC_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.MATIC_TESTNET, WNATIVE_ADDRESS[exports.ChainId.MATIC_TESTNET], 18, 'WMATIC', 'Wrapped Matic'), _WNATIVE[exports.ChainId.XDAI] = /*#__PURE__*/new Token(exports.ChainId.XDAI, WNATIVE_ADDRESS[exports.ChainId.XDAI], 18, 'WXDAI', 'Wrapped xDai'), _WNATIVE[exports.ChainId.BSC] = /*#__PURE__*/new Token(exports.ChainId.BSC, WNATIVE_ADDRESS[exports.ChainId.BSC], 18, 'WBNB', 'Wrapped BNB'), _WNATIVE[exports.ChainId.BSC_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.BSC_TESTNET, WNATIVE_ADDRESS[exports.ChainId.BSC_TESTNET], 18, 'WBNB', 'Wrapped BNB'), _WNATIVE[exports.ChainId.ARBITRUM] = WETH9[exports.ChainId.ARBITRUM], _WNATIVE[exports.ChainId.ARBITRUM_TESTNET] = WETH9[exports.ChainId.ARBITRUM_TESTNET], _WNATIVE[exports.ChainId.MOONBEAM_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.MOONBEAM_TESTNET, WNATIVE_ADDRESS[exports.ChainId.MOONBEAM_TESTNET], 18, 'WETH', 'Wrapped Ether'), _WNATIVE[exports.ChainId.AVALANCHE] = /*#__PURE__*/new Token(exports.ChainId.AVALANCHE, WNATIVE_ADDRESS[exports.ChainId.AVALANCHE], 18, 'WAVAX', 'Wrapped AVAX'), _WNATIVE[exports.ChainId.AVALANCHE_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.AVALANCHE_TESTNET, WNATIVE_ADDRESS[exports.ChainId.AVALANCHE_TESTNET], 18, 'WAVAX', 'Wrapped AVAX'), _WNATIVE[exports.ChainId.HECO] = /*#__PURE__*/new Token(exports.ChainId.HECO, WNATIVE_ADDRESS[exports.ChainId.HECO], 18, 'WHT', 'Wrapped HT'), _WNATIVE[exports.ChainId.HECO_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.HECO_TESTNET, WNATIVE_ADDRESS[exports.ChainId.HECO_TESTNET], 18, 'WHT', 'Wrapped HT'), _WNATIVE[exports.ChainId.HARMONY] = /*#__PURE__*/new Token(exports.ChainId.HARMONY, WNATIVE_ADDRESS[exports.ChainId.HARMONY], 18, 'WONE', 'Wrapped ONE'), _WNATIVE[exports.ChainId.HARMONY_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.HARMONY_TESTNET, WNATIVE_ADDRESS[exports.ChainId.HARMONY_TESTNET], 18, 'WONE', 'Wrapped ONE'), _WNATIVE[exports.ChainId.OKEX] = /*#__PURE__*/new Token(exports.ChainId.OKEX, WNATIVE_ADDRESS[exports.ChainId.OKEX], 18, 'WOKT', 'Wrapped OKExChain'), _WNATIVE[exports.ChainId.OKEX_TESTNET] = /*#__PURE__*/new Token(exports.ChainId.OKEX_TESTNET, WNATIVE_ADDRESS[exports.ChainId.OKEX_TESTNET], 18, 'WOKT', 'Wrapped OKExChain'), _WNATIVE[exports.ChainId.CELO] = /*#__PURE__*/new Token(exports.ChainId.CELO, WNATIVE_ADDRESS[exports.ChainId.CELO], 18, 'CELO', 'Celo'), _WNATIVE[exports.ChainId.PALM] = /*#__PURE__*/new Token(exports.ChainId.PALM, WNATIVE_ADDRESS[exports.ChainId.PALM], 18, 'WPALM', 'Wrapped Palm'), _WNATIVE[exports.ChainId.MOONRIVER] = /*#__PURE__*/new Token(exports.ChainId.MOONRIVER, WNATIVE_ADDRESS[exports.ChainId.MOONRIVER], 18, 'WMOVR', 'Wrapped Moonriver'), _WNATIVE[exports.ChainId.FUSE] = /*#__PURE__*/new Token(exports.ChainId.FUSE, WNATIVE_ADDRESS[exports.ChainId.FUSE], 18, 'WFUSE', 'Wrapped Fuse'), _WNATIVE);
 
-var NativeCurrency = /*#__PURE__*/function (_AbstractCurrency) {
-  _inheritsLoose(NativeCurrency, _AbstractCurrency);
+var Avalanche = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Avalanche, _NativeCurrency);
 
-  function NativeCurrency() {
-    var _this;
-
-    _this = _AbstractCurrency.apply(this, arguments) || this;
-    _this.isNative = true;
-    _this.isToken = false;
-    return _this;
+  function Avalanche(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'AVAX', 'Avalanche') || this;
   }
 
-  var _proto = NativeCurrency.prototype;
+  Avalanche.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Avalanche(chainId);
+  };
+
+  var _proto = Avalanche.prototype;
 
   _proto.equals = function equals(other) {
     return other.isNative && other.chainId === this.chainId;
   };
 
-  _createClass(NativeCurrency, [{
+  _createClass(Avalanche, [{
     key: "wrapped",
     get: function get() {
       var wnative = WNATIVE[this.chainId];
@@ -348,25 +395,9 @@ var NativeCurrency = /*#__PURE__*/function (_AbstractCurrency) {
     }
   }]);
 
-  return NativeCurrency;
-}(AbstractCurrency);
-
-var Matic = /*#__PURE__*/function (_NativeCurrency) {
-  _inheritsLoose(Matic, _NativeCurrency);
-
-  function Matic(chainId) {
-    return _NativeCurrency.call(this, chainId, 18, 'MATIC', 'Matic') || this;
-  }
-
-  Matic.onChain = function onChain(chainId) {
-    var _this$_cache$chainId;
-
-    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Matic(chainId);
-  };
-
-  return Matic;
+  return Avalanche;
 }(NativeCurrency);
-Matic._cache = {};
+Avalanche._cache = {};
 
 var Binance = /*#__PURE__*/function (_NativeCurrency) {
   _inheritsLoose(Binance, _NativeCurrency);
@@ -381,15 +412,388 @@ var Binance = /*#__PURE__*/function (_NativeCurrency) {
     return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Binance(chainId);
   };
 
+  var _proto = Binance.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Binance, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
   return Binance;
 }(NativeCurrency);
 Binance._cache = {};
 
-var _NATIVE;
-var NATIVE = (_NATIVE = {}, _NATIVE[exports.ChainId.MAINNET] = /*#__PURE__*/Binance.onChain(exports.ChainId.MAINNET), _NATIVE[exports.ChainId.BSCTESTNET] = /*#__PURE__*/Binance.onChain(exports.ChainId.BSCTESTNET), _NATIVE[exports.ChainId.MATIC] = /*#__PURE__*/Matic.onChain(exports.ChainId.MATIC), _NATIVE[exports.ChainId.MATIC_TESTNET] = /*#__PURE__*/Matic.onChain(exports.ChainId.MATIC_TESTNET), _NATIVE);
+var Celo = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Celo, _NativeCurrency);
 
-var _INIT_CODE_HASHES, _SOLIDITY_TYPE_MAXIMA;
-var INIT_CODE_HASHES = (_INIT_CODE_HASHES = {}, _INIT_CODE_HASHES[exports.ChainId.MAINNET] = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81', _INIT_CODE_HASHES[exports.ChainId.MATIC] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASHES[exports.ChainId.MATIC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASHES[exports.ChainId.BSCTESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASHES);
+  function Celo(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'CELO', 'Celo') || this;
+  }
+
+  Celo.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Celo(chainId);
+  };
+
+  var _proto = Celo.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Celo, [{
+    key: "wrapped",
+    get: function get() {
+      var wcelo = WNATIVE[this.chainId];
+      !!!wcelo ?  invariant(false, 'WRAPPED')  : void 0;
+      return wcelo;
+    }
+  }]);
+
+  return Celo;
+}(NativeCurrency);
+Celo._cache = {};
+
+/**
+ * Ether is the main usage of a 'native' currency, i.e. for Ethereum mainnet and all testnets
+ */
+
+var Ether = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Ether, _NativeCurrency);
+
+  function Ether(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'ETH', 'Ether') || this;
+  }
+
+  Ether.onChain = function onChain(chainId) {
+    var _this$_etherCache$cha;
+
+    return (_this$_etherCache$cha = this._etherCache[chainId]) !== null && _this$_etherCache$cha !== void 0 ? _this$_etherCache$cha : this._etherCache[chainId] = new Ether(chainId);
+  };
+
+  var _proto = Ether.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Ether, [{
+    key: "wrapped",
+    get: function get() {
+      var weth9 = WETH9[this.chainId];
+      !!!weth9 ?  invariant(false, 'WRAPPED')  : void 0;
+      return weth9;
+    }
+  }]);
+
+  return Ether;
+}(NativeCurrency);
+Ether._etherCache = {};
+
+var Fantom = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Fantom, _NativeCurrency);
+
+  function Fantom(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'FTM', 'Fantom') || this;
+  }
+
+  Fantom.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Fantom(chainId);
+  };
+
+  var _proto = Fantom.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Fantom, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Fantom;
+}(NativeCurrency);
+Fantom._cache = {};
+
+var Harmony = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Harmony, _NativeCurrency);
+
+  function Harmony(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'ONE', 'Harmony') || this;
+  }
+
+  Harmony.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Harmony(chainId);
+  };
+
+  var _proto = Harmony.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Harmony, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Harmony;
+}(NativeCurrency);
+Harmony._cache = {};
+
+var Heco = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Heco, _NativeCurrency);
+
+  function Heco(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'HT', 'Huobi Token') || this;
+  }
+
+  Heco.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Heco(chainId);
+  };
+
+  var _proto = Heco.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Heco, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Heco;
+}(NativeCurrency);
+Heco._cache = {};
+
+var Matic = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Matic, _NativeCurrency);
+
+  function Matic(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'MATIC', 'Matic') || this;
+  }
+
+  Matic.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Matic(chainId);
+  };
+
+  var _proto = Matic.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Matic, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Matic;
+}(NativeCurrency);
+Matic._cache = {};
+
+var Movr = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Movr, _NativeCurrency);
+
+  function Movr(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'MOVR', 'Moonriver') || this;
+  }
+
+  Movr.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Movr(chainId);
+  };
+
+  var _proto = Movr.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Movr, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Movr;
+}(NativeCurrency);
+Movr._cache = {};
+
+var Okex = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Okex, _NativeCurrency);
+
+  function Okex(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'OKT', 'OKExChain') || this;
+  }
+
+  Okex.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Okex(chainId);
+  };
+
+  var _proto = Okex.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Okex, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Okex;
+}(NativeCurrency);
+Okex._cache = {};
+
+var xDai = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(xDai, _NativeCurrency);
+
+  function xDai(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'XDAI', 'xDai') || this;
+  }
+
+  xDai.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new xDai(chainId);
+  };
+
+  var _proto = xDai.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(xDai, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return xDai;
+}(NativeCurrency);
+xDai._cache = {};
+
+var Palm = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Palm, _NativeCurrency);
+
+  function Palm(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'PALM', 'Palm') || this;
+  }
+
+  Palm.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Palm(chainId);
+  };
+
+  var _proto = Palm.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Palm, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Palm;
+}(NativeCurrency);
+Palm._cache = {};
+
+var Fuse = /*#__PURE__*/function (_NativeCurrency) {
+  _inheritsLoose(Fuse, _NativeCurrency);
+
+  function Fuse(chainId) {
+    return _NativeCurrency.call(this, chainId, 18, 'FUSE', 'Fuse') || this;
+  }
+
+  Fuse.onChain = function onChain(chainId) {
+    var _this$_cache$chainId;
+
+    return (_this$_cache$chainId = this._cache[chainId]) !== null && _this$_cache$chainId !== void 0 ? _this$_cache$chainId : this._cache[chainId] = new Fuse(chainId);
+  };
+
+  var _proto = Fuse.prototype;
+
+  _proto.equals = function equals(other) {
+    return other.isNative && other.chainId === this.chainId;
+  };
+
+  _createClass(Fuse, [{
+    key: "wrapped",
+    get: function get() {
+      var wnative = WNATIVE[this.chainId];
+      !!!wnative ?  invariant(false, 'WRAPPED')  : void 0;
+      return wnative;
+    }
+  }]);
+
+  return Fuse;
+}(NativeCurrency);
+Fuse._cache = {};
+
+var _NATIVE;
+var NATIVE = (_NATIVE = {}, _NATIVE[exports.ChainId.MAINNET] = /*#__PURE__*/Ether.onChain(exports.ChainId.MAINNET), _NATIVE[exports.ChainId.ROPSTEN] = /*#__PURE__*/Ether.onChain(exports.ChainId.ROPSTEN), _NATIVE[exports.ChainId.RINKEBY] = /*#__PURE__*/Ether.onChain(exports.ChainId.RINKEBY), _NATIVE[exports.ChainId.GÖRLI] = /*#__PURE__*/Ether.onChain(exports.ChainId.GÖRLI), _NATIVE[exports.ChainId.KOVAN] = /*#__PURE__*/Ether.onChain(exports.ChainId.KOVAN), _NATIVE[exports.ChainId.FANTOM] = /*#__PURE__*/Fantom.onChain(exports.ChainId.FANTOM), _NATIVE[exports.ChainId.FANTOM_TESTNET] = /*#__PURE__*/Fantom.onChain(exports.ChainId.FANTOM_TESTNET), _NATIVE[exports.ChainId.MATIC] = /*#__PURE__*/Matic.onChain(exports.ChainId.MATIC), _NATIVE[exports.ChainId.MATIC_TESTNET] = /*#__PURE__*/Matic.onChain(exports.ChainId.MATIC_TESTNET), _NATIVE[exports.ChainId.XDAI] = /*#__PURE__*/xDai.onChain(exports.ChainId.XDAI), _NATIVE[exports.ChainId.BSC] = /*#__PURE__*/Binance.onChain(exports.ChainId.BSC), _NATIVE[exports.ChainId.BSC_TESTNET] = /*#__PURE__*/Binance.onChain(exports.ChainId.BSC_TESTNET), _NATIVE[exports.ChainId.ARBITRUM] = /*#__PURE__*/Ether.onChain(exports.ChainId.ARBITRUM), _NATIVE[exports.ChainId.AVALANCHE] = /*#__PURE__*/Avalanche.onChain(exports.ChainId.AVALANCHE), _NATIVE[exports.ChainId.AVALANCHE_TESTNET] = /*#__PURE__*/Avalanche.onChain(exports.ChainId.AVALANCHE_TESTNET), _NATIVE[exports.ChainId.HECO] = /*#__PURE__*/Heco.onChain(exports.ChainId.HECO), _NATIVE[exports.ChainId.HECO_TESTNET] = /*#__PURE__*/Heco.onChain(exports.ChainId.HECO_TESTNET), _NATIVE[exports.ChainId.HARMONY] = /*#__PURE__*/Harmony.onChain(exports.ChainId.HARMONY), _NATIVE[exports.ChainId.HARMONY_TESTNET] = /*#__PURE__*/Harmony.onChain(exports.ChainId.HARMONY_TESTNET), _NATIVE[exports.ChainId.OKEX] = /*#__PURE__*/Okex.onChain(exports.ChainId.OKEX), _NATIVE[exports.ChainId.OKEX_TESTNET] = /*#__PURE__*/Okex.onChain(exports.ChainId.OKEX_TESTNET), _NATIVE[exports.ChainId.CELO] = /*#__PURE__*/Celo.onChain(exports.ChainId.CELO), _NATIVE[exports.ChainId.PALM] = /*#__PURE__*/Palm.onChain(exports.ChainId.PALM), _NATIVE[exports.ChainId.MOONRIVER] = /*#__PURE__*/Movr.onChain(exports.ChainId.MOONRIVER), _NATIVE[exports.ChainId.FUSE] = /*#__PURE__*/Fuse.onChain(exports.ChainId.FUSE), _NATIVE);
+
+var MaxUint256 = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+
+var _INIT_CODE_HASH, _SOLIDITY_TYPE_MAXIMA;
+var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[exports.ChainId.MAINNET] = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81', _INIT_CODE_HASH[exports.ChainId.MATIC] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH[exports.ChainId.MATIC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH[exports.ChainId.BSC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH);
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
 var ONE = /*#__PURE__*/JSBI.BigInt(1);
@@ -493,8 +897,14 @@ var Fraction = /*#__PURE__*/function () {
 
     this.numerator = parseBigintIsh(numerator);
     this.denominator = parseBigintIsh(denominator);
-  } // performs floor division
+  }
 
+  Fraction.tryParseFraction = function tryParseFraction(fractionish) {
+    if (fractionish instanceof JSBI || typeof fractionish === 'number' || typeof fractionish === 'string') return new Fraction(fractionish);
+    if ('numerator' in fractionish && 'denominator' in fractionish) return fractionish;
+    throw new Error('Could not parse fraction');
+  } // performs floor division
+  ;
 
   var _proto = Fraction.prototype;
 
@@ -503,7 +913,7 @@ var Fraction = /*#__PURE__*/function () {
   };
 
   _proto.add = function add(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
 
     if (JSBI.equal(this.denominator, otherParsed.denominator)) {
       return new Fraction(JSBI.add(this.numerator, otherParsed.numerator), this.denominator);
@@ -513,7 +923,7 @@ var Fraction = /*#__PURE__*/function () {
   };
 
   _proto.subtract = function subtract(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
 
     if (JSBI.equal(this.denominator, otherParsed.denominator)) {
       return new Fraction(JSBI.subtract(this.numerator, otherParsed.numerator), this.denominator);
@@ -523,27 +933,27 @@ var Fraction = /*#__PURE__*/function () {
   };
 
   _proto.lessThan = function lessThan(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
     return JSBI.lessThan(JSBI.multiply(this.numerator, otherParsed.denominator), JSBI.multiply(otherParsed.numerator, this.denominator));
   };
 
   _proto.equalTo = function equalTo(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
     return JSBI.equal(JSBI.multiply(this.numerator, otherParsed.denominator), JSBI.multiply(otherParsed.numerator, this.denominator));
   };
 
   _proto.greaterThan = function greaterThan(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
     return JSBI.greaterThan(JSBI.multiply(this.numerator, otherParsed.denominator), JSBI.multiply(otherParsed.numerator, this.denominator));
   };
 
   _proto.multiply = function multiply(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
     return new Fraction(JSBI.multiply(this.numerator, otherParsed.numerator), JSBI.multiply(this.denominator, otherParsed.denominator));
   };
 
   _proto.divide = function divide(other) {
-    var otherParsed = other instanceof Fraction ? other : new Fraction(parseBigintIsh(other));
+    var otherParsed = Fraction.tryParseFraction(other);
     return new Fraction(JSBI.multiply(this.numerator, otherParsed.denominator), JSBI.multiply(this.denominator, otherParsed.numerator));
   };
 
@@ -584,7 +994,11 @@ var Fraction = /*#__PURE__*/function () {
     Big.DP = decimalPlaces;
     Big.RM = toFixedRounding[rounding];
     return new Big(this.numerator.toString()).div(this.denominator.toString()).toFormat(decimalPlaces, format);
-  };
+  }
+  /**
+   * Helper method for converting any super class back to a fraction
+   */
+  ;
 
   _createClass(Fraction, [{
     key: "quotient",
@@ -597,6 +1011,11 @@ var Fraction = /*#__PURE__*/function () {
     get: function get() {
       return new Fraction(JSBI.remainder(this.numerator, this.denominator), this.denominator);
     }
+  }, {
+    key: "asFraction",
+    get: function get() {
+      return new Fraction(this.numerator, this.denominator);
+    }
   }]);
 
   return Fraction;
@@ -607,45 +1026,65 @@ var CurrencyAmount = /*#__PURE__*/function (_Fraction) {
   _inheritsLoose(CurrencyAmount, _Fraction);
 
   // amount _must_ be raw, i.e. in the native representation
-  function CurrencyAmount(currency, amount) {
+  function CurrencyAmount(currency, numerator, denominator) {
     var _this;
 
-    var parsedAmount = parseBigintIsh(amount);
-    validateSolidityTypeInstance(parsedAmount, exports.SolidityType.uint256);
-    _this = _Fraction.call(this, parsedAmount, JSBI.exponentiate(TEN, JSBI.BigInt(currency.decimals))) || this;
+    _this = _Fraction.call(this, numerator, denominator) || this;
+    !JSBI.lessThanOrEqual(_this.quotient, SOLIDITY_TYPE_MAXIMA[exports.SolidityType.uint256]) ?  invariant(false, 'AMOUNT')  : void 0;
     _this.currency = currency;
+    _this.decimalScale = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(currency.decimals));
     return _this;
-  }
-  /**
-   * Helper that calls the constructor with the NATIVE currency respected with chainId
-   * @param amount ether amount in wei
-   */
-
-
-  CurrencyAmount["native"] = function native(amount, chainId) {
-    return new CurrencyAmount(NATIVE[chainId], amount);
   }
   /**
    * Returns a new currency amount instance from the unitless amount of token, i.e. the raw amount
    * @param currency the currency in the amount
    * @param rawAmount the raw token or ether amount
    */
-  ;
+
 
   CurrencyAmount.fromRawAmount = function fromRawAmount(currency, rawAmount) {
     return new CurrencyAmount(currency, rawAmount);
+  }
+  /**
+   * Construct a currency amount with a denominator that is not equal to 1
+   * @param currency the currency
+   * @param numerator the numerator of the fractional token amount
+   * @param denominator the denominator of the fractional token amount
+   */
+  ;
+
+  CurrencyAmount.fromFractionalAmount = function fromFractionalAmount(currency, numerator, denominator) {
+    return new CurrencyAmount(currency, numerator, denominator);
   };
 
   var _proto = CurrencyAmount.prototype;
 
   _proto.add = function add(other) {
-    !this.currency.equals(other.currency) ?  invariant(false, 'TOKEN')  : void 0;
-    return new CurrencyAmount(this.currency, JSBI.add(this.raw, other.raw));
+    !this.currency.equals(other.currency) ?  invariant(false, 'CURRENCY')  : void 0;
+
+    var added = _Fraction.prototype.add.call(this, other);
+
+    return CurrencyAmount.fromFractionalAmount(this.currency, added.numerator, added.denominator);
   };
 
   _proto.subtract = function subtract(other) {
-    !this.currency.equals(other.currency) ?  invariant(false, 'TOKEN')  : void 0;
-    return new CurrencyAmount(this.currency, JSBI.subtract(this.raw, other.raw));
+    !this.currency.equals(other.currency) ?  invariant(false, 'CURRENCY')  : void 0;
+
+    var subtracted = _Fraction.prototype.subtract.call(this, other);
+
+    return CurrencyAmount.fromFractionalAmount(this.currency, subtracted.numerator, subtracted.denominator);
+  };
+
+  _proto.multiply = function multiply(other) {
+    var multiplied = _Fraction.prototype.multiply.call(this, other);
+
+    return CurrencyAmount.fromFractionalAmount(this.currency, multiplied.numerator, multiplied.denominator);
+  };
+
+  _proto.divide = function divide(other) {
+    var divided = _Fraction.prototype.divide.call(this, other);
+
+    return CurrencyAmount.fromFractionalAmount(this.currency, divided.numerator, divided.denominator);
   };
 
   _proto.toSignificant = function toSignificant(significantDigits, format, rounding) {
@@ -657,7 +1096,7 @@ var CurrencyAmount = /*#__PURE__*/function (_Fraction) {
       rounding = exports.Rounding.ROUND_DOWN;
     }
 
-    return _Fraction.prototype.toSignificant.call(this, significantDigits, format, rounding);
+    return _Fraction.prototype.divide.call(this, this.decimalScale).toSignificant(significantDigits, format, rounding);
   };
 
   _proto.toFixed = function toFixed(decimalPlaces, format, rounding) {
@@ -669,8 +1108,7 @@ var CurrencyAmount = /*#__PURE__*/function (_Fraction) {
       rounding = exports.Rounding.ROUND_DOWN;
     }
 
-    !(decimalPlaces <= this.currency.decimals) ?  invariant(false, 'DECIMALS')  : void 0;
-    return _Fraction.prototype.toFixed.call(this, decimalPlaces, format, rounding);
+    return _Fraction.prototype.divide.call(this, this.decimalScale).toFixed(decimalPlaces, format, rounding);
   };
 
   _proto.toExact = function toExact(format) {
@@ -681,45 +1119,11 @@ var CurrencyAmount = /*#__PURE__*/function (_Fraction) {
     }
 
     Big$1.DP = this.currency.decimals;
-    return new Big$1(this.numerator.toString()).div(this.denominator.toString()).toFormat(format);
+    return new Big$1(this.quotient.toString()).div(this.decimalScale.toString()).toFormat(format);
   };
-
-  _createClass(CurrencyAmount, [{
-    key: "raw",
-    get: function get() {
-      return this.numerator;
-    }
-  }]);
 
   return CurrencyAmount;
 }(Fraction);
-
-var TokenAmount = /*#__PURE__*/function (_CurrencyAmount) {
-  _inheritsLoose(TokenAmount, _CurrencyAmount);
-
-  // amount _must_ be raw, i.e. in the native representation
-  function TokenAmount(token, amount) {
-    var _this;
-
-    _this = _CurrencyAmount.call(this, token, amount) || this;
-    _this.token = token;
-    return _this;
-  }
-
-  var _proto = TokenAmount.prototype;
-
-  _proto.add = function add(other) {
-    !this.token.equals(other.token) ?  invariant(false, 'TOKEN')  : void 0;
-    return new TokenAmount(this.token, JSBI.add(this.raw, other.raw));
-  };
-
-  _proto.subtract = function subtract(other) {
-    !this.token.equals(other.token) ?  invariant(false, 'TOKEN')  : void 0;
-    return new TokenAmount(this.token, JSBI.subtract(this.raw, other.raw));
-  };
-
-  return TokenAmount;
-}(CurrencyAmount);
 
 var Price = /*#__PURE__*/function (_Fraction) {
   _inheritsLoose(Price, _Fraction);
@@ -742,7 +1146,7 @@ var Price = /*#__PURE__*/function (_Fraction) {
       var _step$value = _step.value,
           i = _step$value[0],
           pair = _step$value[1];
-      prices.push(route.path[i].equals(pair.token0) ? new Price(pair.reserve0.currency, pair.reserve1.currency, pair.reserve0.raw, pair.reserve1.raw) : new Price(pair.reserve1.currency, pair.reserve0.currency, pair.reserve1.raw, pair.reserve0.raw));
+      prices.push(route.path[i].equals(pair.token0) ? new Price(pair.reserve0.currency, pair.reserve1.currency, pair.reserve0.quotient, pair.reserve1.quotient) : new Price(pair.reserve1.currency, pair.reserve0.currency, pair.reserve1.quotient, pair.reserve0.quotient));
     }
 
     return prices.slice(1).reduce(function (accumulator, currentValue) {
@@ -768,11 +1172,9 @@ var Price = /*#__PURE__*/function (_Fraction) {
   _proto.quote = function quote(currencyAmount) {
     !currencyAmount.currency.equals(this.baseCurrency) ?  invariant(false, 'TOKEN')  : void 0;
 
-    if (this.quoteCurrency instanceof Token) {
-      return new TokenAmount(this.quoteCurrency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
-    }
+    var result = _Fraction.prototype.multiply.call(this, currencyAmount);
 
-    return CurrencyAmount.fromRawAmount(currencyAmount.currency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
+    return CurrencyAmount.fromFractionalAmount(this.quoteCurrency, result.numerator, result.denominator);
   };
 
   _proto.toSignificant = function toSignificant(significantDigits, format, rounding) {
@@ -805,6 +1207,39 @@ var Price = /*#__PURE__*/function (_Fraction) {
 
   return Price;
 }(Fraction);
+
+var TokenAmount = /*#__PURE__*/function (_CurrencyAmount) {
+  _inheritsLoose(TokenAmount, _CurrencyAmount);
+
+  // amount _must_ be raw, i.e. in the native representation
+  function TokenAmount(token, numerator, denominator) {
+    var _this;
+
+    _this = _CurrencyAmount.call(this, token, numerator, denominator) || this;
+    _this.token = token;
+    return _this;
+  }
+
+  var _proto = TokenAmount.prototype;
+
+  _proto.add = function add(other) {
+    !this.token.equals(other.token) ?  invariant(false, 'TOKEN')  : void 0;
+
+    var added = _CurrencyAmount.prototype.add.call(this, other);
+
+    return new TokenAmount(this.token, added.numerator, added.denominator);
+  };
+
+  _proto.subtract = function subtract(other) {
+    !this.token.equals(other.token) ?  invariant(false, 'TOKEN')  : void 0;
+
+    var subtracted = _CurrencyAmount.prototype.subtract.call(this, other);
+
+    return new TokenAmount(this.token, subtracted.numerator, subtracted.denominator);
+  };
+
+  return TokenAmount;
+}(CurrencyAmount);
 
 // see https://stackoverflow.com/a/41102306
 var CAN_SET_PROTOTYPE = ('setPrototypeOf' in Object);
@@ -868,7 +1303,7 @@ var Pair = /*#__PURE__*/function () {
     if (((_PAIR_ADDRESS_CACHE = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE === void 0 ? void 0 : (_PAIR_ADDRESS_CACHE$t = _PAIR_ADDRESS_CACHE[tokens[0].address]) === null || _PAIR_ADDRESS_CACHE$t === void 0 ? void 0 : _PAIR_ADDRESS_CACHE$t[tokens[1].address]) === undefined) {
       var _PAIR_ADDRESS_CACHE2, _extends2, _extends3;
 
-      PAIR_ADDRESS_CACHE = _extends({}, PAIR_ADDRESS_CACHE, (_extends3 = {}, _extends3[tokens[0].address] = _extends({}, (_PAIR_ADDRESS_CACHE2 = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE2 === void 0 ? void 0 : _PAIR_ADDRESS_CACHE2[tokens[0].address], (_extends2 = {}, _extends2[tokens[1].address] = address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [tokens[0].address, tokens[1].address])]), INIT_CODE_HASHES[tokens[0].chainId]), _extends2)), _extends3));
+      PAIR_ADDRESS_CACHE = _extends({}, PAIR_ADDRESS_CACHE, (_extends3 = {}, _extends3[tokens[0].address] = _extends({}, (_PAIR_ADDRESS_CACHE2 = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE2 === void 0 ? void 0 : _PAIR_ADDRESS_CACHE2[tokens[0].address], (_extends2 = {}, _extends2[tokens[1].address] = address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [tokens[0].address, tokens[1].address])]), INIT_CODE_HASH[tokens[0].chainId]), _extends2)), _extends3));
     }
 
     return PAIR_ADDRESS_CACHE[tokens[0].address][tokens[1].address];
@@ -910,18 +1345,18 @@ var Pair = /*#__PURE__*/function () {
   _proto.getOutputAmount = function getOutputAmount(inputAmount) {
     !this.involvesToken(inputAmount.token) ?  invariant(false, 'TOKEN')  : void 0;
 
-    if (JSBI.equal(this.reserve0.raw, ZERO) || JSBI.equal(this.reserve1.raw, ZERO)) {
+    if (JSBI.equal(this.reserve0.quotient, ZERO) || JSBI.equal(this.reserve1.quotient, ZERO)) {
       throw new InsufficientReservesError();
     }
 
     var inputReserve = this.reserveOf(inputAmount.token);
     var outputReserve = this.reserveOf(inputAmount.token.equals(this.token0) ? this.token1 : this.token0);
-    var inputAmountWithFee = JSBI.multiply(inputAmount.raw, _998);
-    var numerator = JSBI.multiply(inputAmountWithFee, outputReserve.raw);
-    var denominator = JSBI.add(JSBI.multiply(inputReserve.raw, _1000), inputAmountWithFee);
+    var inputAmountWithFee = JSBI.multiply(inputAmount.quotient, _998);
+    var numerator = JSBI.multiply(inputAmountWithFee, outputReserve.quotient);
+    var denominator = JSBI.add(JSBI.multiply(inputReserve.quotient, _1000), inputAmountWithFee);
     var outputAmount = new TokenAmount(inputAmount.token.equals(this.token0) ? this.token1 : this.token0, JSBI.divide(numerator, denominator));
 
-    if (JSBI.equal(outputAmount.raw, ZERO)) {
+    if (JSBI.equal(outputAmount.quotient, ZERO)) {
       throw new InsufficientInputAmountError();
     }
 
@@ -931,14 +1366,14 @@ var Pair = /*#__PURE__*/function () {
   _proto.getInputAmount = function getInputAmount(outputAmount) {
     !this.involvesToken(outputAmount.token) ?  invariant(false, 'TOKEN')  : void 0;
 
-    if (JSBI.equal(this.reserve0.raw, ZERO) || JSBI.equal(this.reserve1.raw, ZERO) || JSBI.greaterThanOrEqual(outputAmount.raw, this.reserveOf(outputAmount.token).raw)) {
+    if (JSBI.equal(this.reserve0.quotient, ZERO) || JSBI.equal(this.reserve1.quotient, ZERO) || JSBI.greaterThanOrEqual(outputAmount.quotient, this.reserveOf(outputAmount.token).quotient)) {
       throw new InsufficientReservesError();
     }
 
     var outputReserve = this.reserveOf(outputAmount.token);
     var inputReserve = this.reserveOf(outputAmount.token.equals(this.token0) ? this.token1 : this.token0);
-    var numerator = JSBI.multiply(JSBI.multiply(inputReserve.raw, outputAmount.raw), _1000);
-    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.raw, outputAmount.raw), _998);
+    var numerator = JSBI.multiply(JSBI.multiply(inputReserve.quotient, outputAmount.quotient), _1000);
+    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.quotient, outputAmount.quotient), _998);
     var inputAmount = new TokenAmount(outputAmount.token.equals(this.token0) ? this.token1 : this.token0, JSBI.add(JSBI.divide(numerator, denominator), ONE));
     return [inputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))];
   };
@@ -950,11 +1385,11 @@ var Pair = /*#__PURE__*/function () {
     !(tokenAmounts[0].token.equals(this.token0) && tokenAmounts[1].token.equals(this.token1)) ?  invariant(false, 'TOKEN')  : void 0;
     var liquidity;
 
-    if (JSBI.equal(totalSupply.raw, ZERO)) {
-      liquidity = JSBI.subtract(sqrt(JSBI.multiply(tokenAmounts[0].raw, tokenAmounts[1].raw)), MINIMUM_LIQUIDITY);
+    if (JSBI.equal(totalSupply.quotient, ZERO)) {
+      liquidity = JSBI.subtract(sqrt(JSBI.multiply(tokenAmounts[0].quotient, tokenAmounts[1].quotient)), MINIMUM_LIQUIDITY);
     } else {
-      var amount0 = JSBI.divide(JSBI.multiply(tokenAmounts[0].raw, totalSupply.raw), this.reserve0.raw);
-      var amount1 = JSBI.divide(JSBI.multiply(tokenAmounts[1].raw, totalSupply.raw), this.reserve1.raw);
+      var amount0 = JSBI.divide(JSBI.multiply(tokenAmounts[0].quotient, totalSupply.quotient), this.reserve0.quotient);
+      var amount1 = JSBI.divide(JSBI.multiply(tokenAmounts[1].quotient, totalSupply.quotient), this.reserve1.quotient);
       liquidity = JSBI.lessThanOrEqual(amount0, amount1) ? amount0 : amount1;
     }
 
@@ -973,7 +1408,7 @@ var Pair = /*#__PURE__*/function () {
     !this.involvesToken(token) ?  invariant(false, 'TOKEN')  : void 0;
     !totalSupply.token.equals(this.liquidityToken) ?  invariant(false, 'TOTAL_SUPPLY')  : void 0;
     !liquidity.token.equals(this.liquidityToken) ?  invariant(false, 'LIQUIDITY')  : void 0;
-    !JSBI.lessThanOrEqual(liquidity.raw, totalSupply.raw) ?  invariant(false, 'LIQUIDITY')  : void 0;
+    !JSBI.lessThanOrEqual(liquidity.quotient, totalSupply.quotient) ?  invariant(false, 'LIQUIDITY')  : void 0;
     var totalSupplyAdjusted;
 
     if (!feeOn) {
@@ -983,11 +1418,11 @@ var Pair = /*#__PURE__*/function () {
       var kLastParsed = parseBigintIsh(kLast);
 
       if (!JSBI.equal(kLastParsed, ZERO)) {
-        var rootK = sqrt(JSBI.multiply(this.reserve0.raw, this.reserve1.raw));
+        var rootK = sqrt(JSBI.multiply(this.reserve0.quotient, this.reserve1.quotient));
         var rootKLast = sqrt(kLastParsed);
 
         if (JSBI.greaterThan(rootK, rootKLast)) {
-          var numerator = JSBI.multiply(totalSupply.raw, JSBI.subtract(rootK, rootKLast));
+          var numerator = JSBI.multiply(totalSupply.quotient, JSBI.subtract(rootK, rootKLast));
           var denominator = JSBI.add(JSBI.multiply(rootK, FIVE), rootKLast);
           var feeLiquidity = JSBI.divide(numerator, denominator);
           totalSupplyAdjusted = totalSupply.add(new TokenAmount(this.liquidityToken, feeLiquidity));
@@ -999,13 +1434,14 @@ var Pair = /*#__PURE__*/function () {
       }
     }
 
-    return new TokenAmount(token, JSBI.divide(JSBI.multiply(liquidity.raw, this.reserveOf(token).raw), totalSupplyAdjusted.raw));
+    return new TokenAmount(token, JSBI.divide(JSBI.multiply(liquidity.quotient, this.reserveOf(token).quotient), totalSupplyAdjusted.quotient));
   };
 
   _createClass(Pair, [{
     key: "token0Price",
     get: function get() {
-      return new Price(this.token0, this.token1, this.tokenAmounts[0].raw, this.tokenAmounts[1].raw);
+      var result = this.tokenAmounts[1].divide(this.tokenAmounts[0]);
+      return new Price(this.token0, this.token1, result.denominator, result.numerator);
     }
     /**
      * Returns the current mid price of the pair in terms of token1, i.e. the ratio of reserve0 to reserve1
@@ -1014,7 +1450,8 @@ var Pair = /*#__PURE__*/function () {
   }, {
     key: "token1Price",
     get: function get() {
-      return new Price(this.token1, this.token0, this.tokenAmounts[1].raw, this.tokenAmounts[0].raw);
+      var result = this.tokenAmounts[0].divide(this.tokenAmounts[1]);
+      return new Price(this.token1, this.token0, result.denominator, result.numerator);
     }
   }, {
     key: "chainId",
@@ -1125,9 +1562,9 @@ var Percent = /*#__PURE__*/function (_Fraction) {
  */
 
 function computePriceImpact(midPrice, inputAmount, outputAmount) {
-  var exactQuote = midPrice.raw.multiply(inputAmount.raw); // calculate slippage := (exactQuote - outputAmount) / exactQuote
+  var exactQuote = midPrice.raw.multiply(inputAmount.quotient); // calculate slippage := (exactQuote - outputAmount) / exactQuote
 
-  var slippage = exactQuote.subtract(outputAmount.raw).divide(exactQuote);
+  var slippage = exactQuote.subtract(outputAmount.quotient).divide(exactQuote);
   return new Percent(slippage.numerator, slippage.denominator);
 } // comparator function that allows sorting trades by their output amounts, in decreasing order, and then input amounts
 // in increasing order. i.e. the best trades have the most outputs for the least inputs and are sorted first
@@ -1184,7 +1621,7 @@ function tradeComparator(a, b) {
 
 function wrappedAmount(currencyAmount, chainId) {
   if (currencyAmount instanceof TokenAmount) return currencyAmount;
-  if (currencyAmount.currency.isNative) return new TokenAmount(WNATIVE[chainId], currencyAmount.raw);
+  if (currencyAmount.currency.isNative) return new TokenAmount(tokens.WNATIVE[chainId], currencyAmount.quotient);
     invariant(false, 'CURRENCY')  ;
 }
 /**
@@ -1216,7 +1653,7 @@ var Trade = /*#__PURE__*/function () {
       }
 
       this.inputAmount = amount;
-      this.outputAmount = CurrencyAmount.fromRawAmount(route.output, tokenAmounts[tokenAmounts.length - 1].raw);
+      this.outputAmount = CurrencyAmount.fromRawAmount(route.output, tokenAmounts[tokenAmounts.length - 1].quotient);
     } else {
       !amount.currency.equals(route.output) ?  invariant(false, 'OUTPUT')  : void 0;
       tokenAmounts[tokenAmounts.length - 1] = wrappedAmount(amount, route.chainId);
@@ -1232,11 +1669,11 @@ var Trade = /*#__PURE__*/function () {
         nextPairs[_i - 1] = _nextPair;
       }
 
-      this.inputAmount = CurrencyAmount.fromRawAmount(route.input, tokenAmounts[0].raw);
+      this.inputAmount = CurrencyAmount.fromRawAmount(route.input, tokenAmounts[0].quotient);
       this.outputAmount = amount;
     }
 
-    this.executionPrice = new Price(this.inputAmount.currency, this.outputAmount.currency, this.inputAmount.raw, this.outputAmount.raw);
+    this.executionPrice = new Price(this.inputAmount.currency, this.outputAmount.currency, this.inputAmount.quotient, this.outputAmount.quotient);
     this.nextMidPrice = Price.fromRoute(new Route(nextPairs, route.input));
     this.priceImpact = computePriceImpact(route.midPrice, this.inputAmount, this.outputAmount);
   }
@@ -1274,7 +1711,7 @@ var Trade = /*#__PURE__*/function () {
     if (this.tradeType === exports.TradeType.EXACT_OUTPUT) {
       return this.outputAmount;
     } else {
-      var slippageAdjustedAmountOut = new Fraction(ONE).add(slippageTolerance).invert().multiply(this.outputAmount.raw).quotient;
+      var slippageAdjustedAmountOut = new Fraction(ONE).add(slippageTolerance).invert().multiply(this.outputAmount.quotient).quotient;
       return CurrencyAmount.fromRawAmount(this.outputAmount.currency, slippageAdjustedAmountOut);
     }
   }
@@ -1290,7 +1727,7 @@ var Trade = /*#__PURE__*/function () {
     if (this.tradeType === exports.TradeType.EXACT_INPUT) {
       return this.inputAmount;
     } else {
-      var slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(this.inputAmount.raw).quotient;
+      var slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(this.inputAmount.quotient).quotient;
       return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn); // return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn);
     }
   }
@@ -1474,11 +1911,11 @@ var computePairAddress = function computePairAddress(_ref) {
       token1 = _ref2[1]; // does safety checks
 
 
-  return address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASHES[token0.chainId]);
+  return address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASH[token0.chainId]);
 };
 
 function toHex(currencyAmount) {
-  return "0x" + currencyAmount.raw.toString(16);
+  return "0x" + currencyAmount.quotient.toString(16);
 }
 
 var ZERO_HEX = '0x0';
@@ -1682,21 +2119,32 @@ var Fetcher = /*#__PURE__*/function () {
 
 exports.JSBI = JSBI;
 exports.AbstractCurrency = AbstractCurrency;
+exports.Avalanche = Avalanche;
 exports.Binance = Binance;
+exports.Celo = Celo;
 exports.CurrencyAmount = CurrencyAmount;
+exports.Ether = Ether;
 exports.FACTORY_ADDRESSES = FACTORY_ADDRESSES;
 exports.FIVE = FIVE;
+exports.Fantom = Fantom;
 exports.Fetcher = Fetcher;
 exports.Fraction = Fraction;
-exports.INIT_CODE_HASHES = INIT_CODE_HASHES;
+exports.Fuse = Fuse;
+exports.Harmony = Harmony;
+exports.Heco = Heco;
+exports.INIT_CODE_HASH = INIT_CODE_HASH;
 exports.InsufficientInputAmountError = InsufficientInputAmountError;
 exports.InsufficientReservesError = InsufficientReservesError;
 exports.MINIMUM_LIQUIDITY = MINIMUM_LIQUIDITY;
 exports.Matic = Matic;
+exports.MaxUint256 = MaxUint256;
+exports.Movr = Movr;
 exports.NATIVE = NATIVE;
 exports.NativeCurrency = NativeCurrency;
 exports.ONE = ONE;
+exports.Okex = Okex;
 exports.Pair = Pair;
+exports.Palm = Palm;
 exports.Percent = Percent;
 exports.Price = Price;
 exports.ROUTER_ADDRESSES = ROUTER_ADDRESSES;
@@ -1709,7 +2157,9 @@ exports.TWO = TWO;
 exports.Token = Token;
 exports.TokenAmount = TokenAmount;
 exports.Trade = Trade;
-exports.WNATIVE = WNATIVE;
+exports.USDC_ADDRESS = USDC_ADDRESS;
+exports.WETH9_ADDRESS = WETH9_ADDRESS;
+exports.WNATIVE_ADDRESS = WNATIVE_ADDRESS;
 exports.ZERO = ZERO;
 exports._100 = _100;
 exports._1000 = _1000;
@@ -1719,4 +2169,5 @@ exports.currencyEquals = currencyEquals;
 exports.inputOutputComparator = inputOutputComparator;
 exports.tradeComparator = tradeComparator;
 exports.validateAndParseAddress = validateAndParseAddress;
+exports.xDai = xDai;
 //# sourceMappingURL=v2-sdk.cjs.development.js.map
