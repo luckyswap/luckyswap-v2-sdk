@@ -1,7 +1,9 @@
 import { ChainId } from '../enums/ChainId'
+
 export * from './addresses'
 export * from './natives'
 export * from './numbers'
+export * from './tokens'
 
 import JSBI from 'jsbi'
 import { AddressMap } from 'types/AddressMap'

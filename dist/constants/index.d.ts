@@ -1,6 +1,7 @@
 export * from './addresses';
 export * from './natives';
 export * from './numbers';
+export * from './tokens';
 import JSBI from 'jsbi';
 import { AddressMap } from 'types/AddressMap';
 export declare const INIT_CODE_HASH: AddressMap;
