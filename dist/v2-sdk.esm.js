@@ -7,7 +7,6 @@ import _Big from 'big.js';
 import toFormat from 'toformat';
 import _Decimal from 'decimal.js-light';
 import { keccak256, pack } from '@ethersproject/solidity';
-import { WNATIVE as WNATIVE$1 } from 'constants/tokens';
 import { Contract } from '@ethersproject/contracts';
 import { getNetwork } from '@ethersproject/networks';
 import { getDefaultProvider } from '@ethersproject/providers';
@@ -1623,7 +1622,7 @@ function tradeComparator(a, b) {
 
 function wrappedAmount(currencyAmount, chainId) {
   if (currencyAmount instanceof TokenAmount) return currencyAmount;
-  if (currencyAmount.currency.isNative) return new TokenAmount(WNATIVE$1[chainId], currencyAmount.quotient);
+  if (currencyAmount.currency.isNative) return new TokenAmount(WNATIVE[chainId], currencyAmount.quotient);
    process.env.NODE_ENV !== "production" ? invariant(false, 'CURRENCY') : invariant(false) ;
 }
 /**

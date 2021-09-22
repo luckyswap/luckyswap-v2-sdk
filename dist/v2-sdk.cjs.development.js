@@ -12,7 +12,6 @@ var _Big = _interopDefault(require('big.js'));
 var toFormat = _interopDefault(require('toformat'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var solidity = require('@ethersproject/solidity');
-var tokens = require('constants/tokens');
 var contracts = require('@ethersproject/contracts');
 var networks = require('@ethersproject/networks');
 var providers = require('@ethersproject/providers');
@@ -1621,7 +1620,7 @@ function tradeComparator(a, b) {
 
 function wrappedAmount(currencyAmount, chainId) {
   if (currencyAmount instanceof TokenAmount) return currencyAmount;
-  if (currencyAmount.currency.isNative) return new TokenAmount(tokens.WNATIVE[chainId], currencyAmount.quotient);
+  if (currencyAmount.currency.isNative) return new TokenAmount(WNATIVE[chainId], currencyAmount.quotient);
     invariant(false, 'CURRENCY')  ;
 }
 /**

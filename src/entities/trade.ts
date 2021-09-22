@@ -1,4 +1,4 @@
-import { WNATIVE } from 'constants/tokens'
+import { WNATIVE } from '../constants/tokens'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../constants'
 import { ChainId, TradeType } from '../enums'
