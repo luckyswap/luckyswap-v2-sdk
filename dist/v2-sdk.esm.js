@@ -3,10 +3,10 @@ export { default as JSBI } from 'jsbi';
 import invariant from 'tiny-invariant';
 import { getAddress, getCreate2Address } from '@ethersproject/address';
 import warning from 'tiny-warning';
+import { keccak256, pack } from '@ethersproject/solidity';
 import _Big from 'big.js';
 import toFormat from 'toformat';
 import _Decimal from 'decimal.js-light';
-import { keccak256, pack } from '@ethersproject/solidity';
 import { Contract } from '@ethersproject/contracts';
 import { getNetwork } from '@ethersproject/networks';
 import { getDefaultProvider } from '@ethersproject/providers';
@@ -47,8 +47,8 @@ var ChainId;
 
 var _USDC_ADDRESS, _FACTORY_ADDRESSES, _ROUTER_ADDRESSES, _WETH9_ADDRESS, _WNATIVE_ADDRESS;
 var USDC_ADDRESS = (_USDC_ADDRESS = {}, _USDC_ADDRESS[ChainId.MAINNET] = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', _USDC_ADDRESS[ChainId.ROPSTEN] = '0x0D9C8723B343A8368BebE0B5E89273fF8D712e3C', _USDC_ADDRESS[ChainId.KOVAN] = '0xb7a4F3E9097C08dA09517b5aB877F7a917224ede', _USDC_ADDRESS[ChainId.MATIC] = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', _USDC_ADDRESS[ChainId.FANTOM] = '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', _USDC_ADDRESS[ChainId.BSC] = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', _USDC_ADDRESS[ChainId.HARMONY] = '0x985458E523dB3d53125813eD68c274899e9DfAb4', _USDC_ADDRESS[ChainId.HECO] = '0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B', _USDC_ADDRESS[ChainId.OKEX] = '0xc946DAf81b08146B1C7A8Da2A851Ddf2B3EAaf85', _USDC_ADDRESS[ChainId.XDAI] = '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83', _USDC_ADDRESS[ChainId.ARBITRUM] = '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8', _USDC_ADDRESS[ChainId.AVALANCHE] = '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664', _USDC_ADDRESS);
-var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[ChainId.MAINNET] = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4', _FACTORY_ADDRESSES[ChainId.MATIC] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[ChainId.MATIC_TESTNET] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[ChainId.BSC_TESTNET] = '0x7f86C595905506B9cab69Af085d969F2a2f06adC', _FACTORY_ADDRESSES);
-var ROUTER_ADDRESSES = (_ROUTER_ADDRESSES = {}, _ROUTER_ADDRESSES[ChainId.MAINNET] = '0x5c75d3A4342f4874b33DE6E0609535Da0b9e4C5B', _ROUTER_ADDRESSES[ChainId.MATIC] = '0x8a13265913EF40C4EA6D8519c2281c2A1fC5e93d', _ROUTER_ADDRESSES[ChainId.MATIC_TESTNET] = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd', _ROUTER_ADDRESSES[ChainId.BSC_TESTNET] = '0xAED59cDE6f480481d0096440cDBe6F092E96b336', _ROUTER_ADDRESSES);
+var FACTORY_ADDRESSES = (_FACTORY_ADDRESSES = {}, _FACTORY_ADDRESSES[ChainId.BSC] = '0x86325Af801Eb418eCE6Ff2Bb8F4C6322543858E4', _FACTORY_ADDRESSES[ChainId.MATIC] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[ChainId.MATIC_TESTNET] = '0xaB9A2CB71E526ADD626747fD4D738f80572233D2', _FACTORY_ADDRESSES[ChainId.BSC_TESTNET] = '0x7f86C595905506B9cab69Af085d969F2a2f06adC', _FACTORY_ADDRESSES);
+var ROUTER_ADDRESSES = (_ROUTER_ADDRESSES = {}, _ROUTER_ADDRESSES[ChainId.BSC] = '0x5c75d3A4342f4874b33DE6E0609535Da0b9e4C5B', _ROUTER_ADDRESSES[ChainId.MATIC] = '0x8a13265913EF40C4EA6D8519c2281c2A1fC5e93d', _ROUTER_ADDRESSES[ChainId.MATIC_TESTNET] = '0x037D2Ab45B62aaf282473c20425B8EA1eF3d4dDd', _ROUTER_ADDRESSES[ChainId.BSC_TESTNET] = '0xAED59cDE6f480481d0096440cDBe6F092E96b336', _ROUTER_ADDRESSES);
 var WETH9_ADDRESS = (_WETH9_ADDRESS = {}, _WETH9_ADDRESS[ChainId.MAINNET] = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', _WETH9_ADDRESS[ChainId.ROPSTEN] = '0xc778417E063141139Fce010982780140Aa0cD5Ab', _WETH9_ADDRESS[ChainId.RINKEBY] = '0xc778417E063141139Fce010982780140Aa0cD5Ab', _WETH9_ADDRESS[ChainId.GÖRLI] = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6', _WETH9_ADDRESS[ChainId.KOVAN] = '0xd0A1E359811322d97991E03f863a0C30C2cF029C', _WETH9_ADDRESS[ChainId.ARBITRUM] = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', _WETH9_ADDRESS[ChainId.ARBITRUM_TESTNET] = '0xf8456e5e6A225C2C1D74D8C9a4cB2B1d5dc1153b', _WETH9_ADDRESS[ChainId.BSC] = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', _WETH9_ADDRESS[ChainId.FANTOM] = '0x74b23882a30290451A17c44f4F05243b6b58C76d', _WETH9_ADDRESS[ChainId.MATIC] = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', _WETH9_ADDRESS[ChainId.OKEX] = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', _WETH9_ADDRESS[ChainId.HECO] = '0x64FF637fB478863B7468bc97D30a5bF3A428a1fD', _WETH9_ADDRESS[ChainId.HARMONY] = '0x6983D1E6DEf3690C4d616b13597A09e6193EA013', _WETH9_ADDRESS[ChainId.XDAI] = '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1', _WETH9_ADDRESS[ChainId.AVALANCHE] = '0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15', _WETH9_ADDRESS);
 var WNATIVE_ADDRESS = (_WNATIVE_ADDRESS = {}, _WNATIVE_ADDRESS[ChainId.MAINNET] = WETH9_ADDRESS[ChainId.MAINNET], _WNATIVE_ADDRESS[ChainId.ROPSTEN] = WETH9_ADDRESS[ChainId.ROPSTEN], _WNATIVE_ADDRESS[ChainId.RINKEBY] = WETH9_ADDRESS[ChainId.RINKEBY], _WNATIVE_ADDRESS[ChainId.GÖRLI] = WETH9_ADDRESS[ChainId.GÖRLI], _WNATIVE_ADDRESS[ChainId.KOVAN] = WETH9_ADDRESS[ChainId.KOVAN], _WNATIVE_ADDRESS[ChainId.ARBITRUM] = WETH9_ADDRESS[ChainId.ARBITRUM], _WNATIVE_ADDRESS[ChainId.ARBITRUM_TESTNET] = WETH9_ADDRESS[ChainId.ARBITRUM_TESTNET], _WNATIVE_ADDRESS[ChainId.FANTOM] = '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', _WNATIVE_ADDRESS[ChainId.FANTOM_TESTNET] = '0xf1277d1Ed8AD466beddF92ef448A132661956621', _WNATIVE_ADDRESS[ChainId.MATIC] = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', _WNATIVE_ADDRESS[ChainId.MATIC_TESTNET] = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', _WNATIVE_ADDRESS[ChainId.XDAI] = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d', _WNATIVE_ADDRESS[ChainId.BSC] = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', _WNATIVE_ADDRESS[ChainId.BSC_TESTNET] = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', _WNATIVE_ADDRESS[ChainId.MOONBEAM_TESTNET] = '0xe73763DB808ecCDC0E36bC8E32510ED126910394', _WNATIVE_ADDRESS[ChainId.AVALANCHE] = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', _WNATIVE_ADDRESS[ChainId.AVALANCHE_TESTNET] = '0xd00ae08403B9bbb9124bB305C09058E32C39A48c', _WNATIVE_ADDRESS[ChainId.HECO] = '0x5545153CCFcA01fbd7Dd11C0b23ba694D9509A6F', _WNATIVE_ADDRESS[ChainId.HECO_TESTNET] = '0x5B2DA6F42CA09C77D577a12BeaD0446148830687', _WNATIVE_ADDRESS[ChainId.HARMONY] = '0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a', _WNATIVE_ADDRESS[ChainId.HARMONY_TESTNET] = '0x7a2afac38517d512E55C0bCe3b6805c10a04D60F', _WNATIVE_ADDRESS[ChainId.OKEX] = '0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15', _WNATIVE_ADDRESS[ChainId.OKEX_TESTNET] = '0x2219845942d28716c0F7C605765fABDcA1a7d9E0', _WNATIVE_ADDRESS[ChainId.CELO] = '0x471EcE3750Da237f93B8E339c536989b8978a438', _WNATIVE_ADDRESS[ChainId.PALM] = '0xF98cABF0a963452C5536330408B2590567611a71', _WNATIVE_ADDRESS[ChainId.MOONRIVER] = '0xf50225a84382c74CbdeA10b0c176f71fc3DE0C4d', _WNATIVE_ADDRESS[ChainId.FUSE] = '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629', _WNATIVE_ADDRESS);
 
@@ -793,7 +793,7 @@ var NATIVE = (_NATIVE = {}, _NATIVE[ChainId.MAINNET] = /*#__PURE__*/Ether.onChai
 var MaxUint256 = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
 var _INIT_CODE_HASH, _SOLIDITY_TYPE_MAXIMA;
-var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[ChainId.MAINNET] = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81', _INIT_CODE_HASH[ChainId.MATIC] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH[ChainId.MATIC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH[ChainId.BSC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH);
+var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[ChainId.BSC] = '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81', _INIT_CODE_HASH[ChainId.MATIC] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH[ChainId.MATIC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH[ChainId.BSC_TESTNET] = '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659', _INIT_CODE_HASH);
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
 var ONE = /*#__PURE__*/JSBI.BigInt(1);
@@ -812,6 +812,62 @@ var SolidityType;
 })(SolidityType || (SolidityType = {}));
 
 var SOLIDITY_TYPE_MAXIMA = (_SOLIDITY_TYPE_MAXIMA = {}, _SOLIDITY_TYPE_MAXIMA[SolidityType.uint8] = /*#__PURE__*/JSBI.BigInt('0xff'), _SOLIDITY_TYPE_MAXIMA[SolidityType.uint256] = /*#__PURE__*/JSBI.BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'), _SOLIDITY_TYPE_MAXIMA);
+
+var computePairAddress = function computePairAddress(_ref) {
+  var factoryAddress = _ref.factoryAddress,
+      tokenA = _ref.tokenA,
+      tokenB = _ref.tokenB;
+
+  var _ref2 = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA],
+      token0 = _ref2[0],
+      token1 = _ref2[1]; // does safety checks
+
+
+  return getCreate2Address(factoryAddress, keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASH[token0.chainId]);
+};
+
+// see https://stackoverflow.com/a/41102306
+var CAN_SET_PROTOTYPE = ('setPrototypeOf' in Object);
+/**
+ * Indicates that the pair has insufficient reserves for a desired output amount. I.e. the amount of output cannot be
+ * obtained by sending any amount of input.
+ */
+
+var InsufficientReservesError = /*#__PURE__*/function (_Error) {
+  _inheritsLoose(InsufficientReservesError, _Error);
+
+  function InsufficientReservesError() {
+    var _this;
+
+    _this = _Error.call(this) || this;
+    _this.isInsufficientReservesError = true;
+    _this.name = _this.constructor.name;
+    if (CAN_SET_PROTOTYPE) Object.setPrototypeOf(_assertThisInitialized(_this), (this instanceof InsufficientReservesError ? this.constructor : void 0).prototype);
+    return _this;
+  }
+
+  return InsufficientReservesError;
+}( /*#__PURE__*/_wrapNativeSuper(Error));
+/**
+ * Indicates that the input amount is too small to produce any amount of output. I.e. the amount of input sent is less
+ * than the price of a single unit of output after fees.
+ */
+
+var InsufficientInputAmountError = /*#__PURE__*/function (_Error2) {
+  _inheritsLoose(InsufficientInputAmountError, _Error2);
+
+  function InsufficientInputAmountError() {
+    var _this2;
+
+    _this2 = _Error2.call(this) || this;
+    _this2.isInsufficientInputAmountError = true;
+    _this2.name = _this2.constructor.name;
+    if (CAN_SET_PROTOTYPE) Object.setPrototypeOf(_assertThisInitialized(_this2), (this instanceof InsufficientInputAmountError ? this.constructor : void 0).prototype);
+    return _this2;
+  }
+
+  return InsufficientInputAmountError;
+}( /*#__PURE__*/_wrapNativeSuper(Error));
 
 function validateSolidityTypeInstance(value, solidityType) {
   !JSBI.greaterThanOrEqual(value, ZERO) ? process.env.NODE_ENV !== "production" ? invariant(false, value + " is not a " + solidityType + ".") : invariant(false) : void 0;
@@ -1242,50 +1298,6 @@ var TokenAmount = /*#__PURE__*/function (_CurrencyAmount) {
   return TokenAmount;
 }(CurrencyAmount);
 
-// see https://stackoverflow.com/a/41102306
-var CAN_SET_PROTOTYPE = ('setPrototypeOf' in Object);
-/**
- * Indicates that the pair has insufficient reserves for a desired output amount. I.e. the amount of output cannot be
- * obtained by sending any amount of input.
- */
-
-var InsufficientReservesError = /*#__PURE__*/function (_Error) {
-  _inheritsLoose(InsufficientReservesError, _Error);
-
-  function InsufficientReservesError() {
-    var _this;
-
-    _this = _Error.call(this) || this;
-    _this.isInsufficientReservesError = true;
-    _this.name = _this.constructor.name;
-    if (CAN_SET_PROTOTYPE) Object.setPrototypeOf(_assertThisInitialized(_this), (this instanceof InsufficientReservesError ? this.constructor : void 0).prototype);
-    return _this;
-  }
-
-  return InsufficientReservesError;
-}( /*#__PURE__*/_wrapNativeSuper(Error));
-/**
- * Indicates that the input amount is too small to produce any amount of output. I.e. the amount of input sent is less
- * than the price of a single unit of output after fees.
- */
-
-var InsufficientInputAmountError = /*#__PURE__*/function (_Error2) {
-  _inheritsLoose(InsufficientInputAmountError, _Error2);
-
-  function InsufficientInputAmountError() {
-    var _this2;
-
-    _this2 = _Error2.call(this) || this;
-    _this2.isInsufficientInputAmountError = true;
-    _this2.name = _this2.constructor.name;
-    if (CAN_SET_PROTOTYPE) Object.setPrototypeOf(_assertThisInitialized(_this2), (this instanceof InsufficientInputAmountError ? this.constructor : void 0).prototype);
-    return _this2;
-  }
-
-  return InsufficientInputAmountError;
-}( /*#__PURE__*/_wrapNativeSuper(Error));
-
-var PAIR_ADDRESS_CACHE = {};
 var Pair = /*#__PURE__*/function () {
   function Pair(tokenAmountA, tokenAmountB) {
     var tokenAmounts = tokenAmountA.token.sortsBefore(tokenAmountB.token) // does safety checks
@@ -1295,19 +1307,11 @@ var Pair = /*#__PURE__*/function () {
   }
 
   Pair.getAddress = function getAddress(tokenA, tokenB) {
-    var _PAIR_ADDRESS_CACHE, _PAIR_ADDRESS_CACHE$t;
-
-    var tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]; // does safety checks
-
-    var factoryAddress = FACTORY_ADDRESSES[tokenA.chainId];
-
-    if (((_PAIR_ADDRESS_CACHE = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE === void 0 ? void 0 : (_PAIR_ADDRESS_CACHE$t = _PAIR_ADDRESS_CACHE[tokens[0].address]) === null || _PAIR_ADDRESS_CACHE$t === void 0 ? void 0 : _PAIR_ADDRESS_CACHE$t[tokens[1].address]) === undefined) {
-      var _PAIR_ADDRESS_CACHE2, _extends2, _extends3;
-
-      PAIR_ADDRESS_CACHE = _extends({}, PAIR_ADDRESS_CACHE, (_extends3 = {}, _extends3[tokens[0].address] = _extends({}, (_PAIR_ADDRESS_CACHE2 = PAIR_ADDRESS_CACHE) === null || _PAIR_ADDRESS_CACHE2 === void 0 ? void 0 : _PAIR_ADDRESS_CACHE2[tokens[0].address], (_extends2 = {}, _extends2[tokens[1].address] = getCreate2Address(factoryAddress, keccak256(['bytes'], [pack(['address', 'address'], [tokens[0].address, tokens[1].address])]), INIT_CODE_HASH[tokens[0].chainId]), _extends2)), _extends3));
-    }
-
-    return PAIR_ADDRESS_CACHE[tokens[0].address][tokens[1].address];
+    return computePairAddress({
+      factoryAddress: FACTORY_ADDRESSES[tokenA.chainId],
+      tokenA: tokenA,
+      tokenB: tokenB
+    });
   }
   /**
    * Returns true if the token is either token0 or token1
@@ -1901,19 +1905,6 @@ var Trade = /*#__PURE__*/function () {
 
   return Trade;
 }();
-
-var computePairAddress = function computePairAddress(_ref) {
-  var factoryAddress = _ref.factoryAddress,
-      tokenA = _ref.tokenA,
-      tokenB = _ref.tokenB;
-
-  var _ref2 = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA],
-      token0 = _ref2[0],
-      token1 = _ref2[1]; // does safety checks
-
-
-  return getCreate2Address(factoryAddress, keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]), INIT_CODE_HASH[token0.chainId]);
-};
 
 function toHex(currencyAmount) {
   return "0x" + currencyAmount.quotient.toString(16);

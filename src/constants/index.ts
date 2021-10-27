@@ -9,7 +9,7 @@ import JSBI from 'jsbi'
 import { AddressMap } from 'types/AddressMap'
 
 export const INIT_CODE_HASH: AddressMap = {
-  [ChainId.MAINNET]: '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81',
+  [ChainId.BSC]: '0xd56c41afae4622ccce0d01f31c6837f59840ab1b102b7a97103a5d99671acd81',
   [ChainId.MATIC]: '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659',
   [ChainId.MATIC_TESTNET]: '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659',
   [ChainId.BSC_TESTNET]: '0x6d5fdaab3371d5d158f62abbc39e801a20feab6444a5750398a310ff3730c659'
